@@ -33,7 +33,7 @@ export const createContractInstance = async() => {
     try {
         const contract = new web3.eth.Contract(
             contractABI.abi,
-            "0x56890587B36c654cd93993876ceBB6AE91736162"
+            "0x56890587B36c654cd93993876ceBB6AE91736162" //contract intance
         );
 
         return contract;
@@ -43,7 +43,7 @@ export const createContractInstance = async() => {
     }
 };
 
-export const getContributors = async () => {
+export const getContributors = async() =>{
     try {
         const contract = await createContractInstance();
         if (!contract) {
