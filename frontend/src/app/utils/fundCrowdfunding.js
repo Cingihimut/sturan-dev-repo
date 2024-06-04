@@ -1,9 +1,9 @@
 import { createContractInstance } from "./contract";
 import { connectWeb3 } from "./web3";
-import xtrContractJson from "../../contracts/Xtr.json";
+import xtrContractJson from "../../contracts/XtrModule#Xtr.json";
 import Web3 from "web3";
 const xtrAbi = xtrContractJson.abi;
-const xtrAddress = "0xB2c86ccFBfbE235657a5d2556f2B3B1156A23283";
+const xtrAddress = "0x5F9E185CF5Fadc4b5F9a600Bd40178cd545e3A63";
 
 
 export const approveToken = async (crowdfundingAddress, amount) => {
@@ -16,9 +16,7 @@ export const approveToken = async (crowdfundingAddress, amount) => {
 
      const amountInWei = Web3.utils.toWei(amount.toString(), "ether")
  
-     await tokenContract.methods.approve(crowdfundingAddress, amountInWei).send({
-       from: sender,
-     });
+     await tokenContract.methods.approve(crowdfundingAddress, amountInWei).send({from: sender});
      console.log("Token approved for crowdfunding contract");
    } catch (error) {
      console.error("Error approving token:", error);

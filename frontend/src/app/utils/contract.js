@@ -1,6 +1,6 @@
 import { connectWeb3 } from "./web3";
 import Web3 from "web3";
-import contractABI from "../../../../SmartContract/ignition/deployments/chain-11155111/artifacts/CrowdfundingModule#Crowdfunding.json"
+import contractABI from "../../contracts/CrowdfundingModule#Crowdfunding.json";
 
 const web3 = new Web3();
 export const getConnectedAccount = async () => {
@@ -33,7 +33,7 @@ export const createContractInstance = async() => {
     try {
         const contract = new web3.eth.Contract(
             contractABI.abi,
-            "0x56890587B36c654cd93993876ceBB6AE91736162" //contract intance
+            "0x607821e22c28c59AB60EFA165f62B02147d12D70" //contract intance
         );
 
         return contract;
