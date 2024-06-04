@@ -1,9 +1,10 @@
+const { sepolia } = require("viem/chains");
+
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
 const infura_api_key = process.env.INFURA_API_KEY;
 const private_key = process.env.PRIVATE_KEY;
-const mnemonic = process.env.MNEMONIC;
 const etherscan_api_key = process.env.ETHERSCAN_API_KEY;
 
 /** @type import('hardhat/config').HardhatUserConfig */
@@ -26,8 +27,13 @@ module.exports = {
       }
     }
   },
+  sourcify: {
+    enabled: true
+  },
   etherscan: {
-    url: `https://api.etherscan.io/api?apikey=${etherscan_api_key}`
+    apiKey: {
+      sepolia: etherscan_api_key
+    }
   },
   paths: {
     sources: "./contracts",
