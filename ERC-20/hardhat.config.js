@@ -1,5 +1,3 @@
-const { sepolia } = require("viem/chains");
-
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 

@@ -3,12 +3,12 @@ import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { getConnectedAccount, getTokenBalance } from "../app/utils/contract";
 import { fundCrowdfunding, approveToken } from "../app/utils/fundCrowdfunding";
-import contractJson from "../contracts/XtrModule#Xtr.json";
+import contractJson from "../contracts/Xtr.json";
 import Web3 from "web3";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
-const XTRAddress = "0x5F9E185CF5Fadc4b5F9a600Bd40178cd545e3A63";
+const XTRAddress = "0x086D459A513f10abec41B5839aF688f68EFE0abb";
 
 const CardSubmit = ({ onClose }) => {
     const [inputValue, setInputValue] = useState('');
@@ -60,16 +60,15 @@ const CardSubmit = ({ onClose }) => {
             console.log('Input value is empty');
             return;
         }
-
+    
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x607821e22c28c59AB60EFA165f62B02147d12D70"; //crowdfunding contract
-        
-
+        const crowdfundingAddress = "0x2599525F880BB04Ede7D174db9ad05d61026c0AD"; //crowdfunding contract
+    
         const contributorAmountInWei = Web3.utils.toWei(contributionAmount.toString(), "ether");
-
+    
         try {
-            await approveToken(crowdfundingAddress, contributorAmountInWei);
             await fundCrowdfunding(contributionAmount);
+            console.log("Crowdfunding funded");
             onClose();
         } catch (error) {
             console.error("Error submitting error:", error);
