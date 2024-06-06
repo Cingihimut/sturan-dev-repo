@@ -1,8 +1,7 @@
-import { connectWeb3 } from "./web3";
+import { connectWeb3 } from "@/app/utils/web3";
 import Web3 from "web3";
-import contractABI from "../../contracts/CrowdfundingModule#Crowdfunding.json";
+import contractABI from "../../contracts/Crowdfunding.json"
 
-const web3 = new Web3();
 export const getConnectedAccount = async () => {
     try {
         const web3Instance = await connectWeb3();
@@ -31,19 +30,20 @@ export const getTokenBalance = async (account, contractAbi, contractAddress) => 
 
 export const createContractInstance = async() => {
     try {
+        const web3 = await connectWeb3();
+
         const contract = new web3.eth.Contract(
             contractABI.abi,
-            "0x607821e22c28c59AB60EFA165f62B02147d12D70" //contract intance
+            "0x2599525F880BB04Ede7D174db9ad05d61026c0AD"
         );
-
-        return contract;
+        return contract
     } catch (error) {
         console.log(error);
         return null;
     }
-};
+}
 
-export const getContributors = async() =>{
+export const getContributors = async () => {
     try {
         const contract = await createContractInstance();
         if (!contract) {
