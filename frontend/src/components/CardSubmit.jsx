@@ -8,7 +8,7 @@ import Web3 from "web3";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
-const XTRAddress = "0xB2c86ccFBfbE235657a5d2556f2B3B1156A23283";
+const XTRAddress = "0x086D459A513f10abec41B5839aF688f68EFE0abb";
 
 const CardSubmit = ({ onClose }) => {
     const [inputValue, setInputValue] = useState('');
@@ -60,16 +60,15 @@ const CardSubmit = ({ onClose }) => {
             console.log('Input value is empty');
             return;
         }
-
+    
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x56890587B36c654cd93993876ceBB6AE91736162"; //crowdfunding contract
-        
-
+        const crowdfundingAddress = "0x2599525F880BB04Ede7D174db9ad05d61026c0AD"; //crowdfunding contract
+    
         const contributorAmountInWei = Web3.utils.toWei(contributionAmount.toString(), "ether");
-
+    
         try {
-            await approveToken(crowdfundingAddress, contributorAmountInWei);
             await fundCrowdfunding(contributionAmount);
+            console.log("Crowdfunding funded");
             onClose();
         } catch (error) {
             console.error("Error submitting error:", error);

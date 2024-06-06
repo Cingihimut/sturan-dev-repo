@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Xtr is ERC20, ERC20Burnable, Ownable, ERC20Pausable {
     constructor(address initialOwner) ERC20("Xtr", "Xtr") Ownable(initialOwner) {
         transferOwnership(initialOwner);    
-        _mint(msg.sender, 100000000 *10 **decimals());
+        _mint(msg.sender, 60000000 *10 **decimals());
     }
 
     function pause() public onlyOwner{

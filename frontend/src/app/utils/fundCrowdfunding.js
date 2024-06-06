@@ -3,8 +3,7 @@ import { connectWeb3 } from "./web3";
 import xtrContractJson from "../../contracts/Xtr.json";
 import Web3 from "web3";
 const xtrAbi = xtrContractJson.abi;
-const xtrAddress = "0xB2c86ccFBfbE235657a5d2556f2B3B1156A23283";
-
+const xtrAddress = "0x086D459A513f10abec41B5839aF688f68EFE0abb";
 
 export const approveToken = async (crowdfundingAddress, amount) => {
    try {

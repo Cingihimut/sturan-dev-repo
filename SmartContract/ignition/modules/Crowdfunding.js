@@ -2,7 +2,7 @@ const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 const { ethers } = require("hardhat");
 
 module.exports = buildModule("CrowdfundingModule", (m) => {
-  const xtrAddress = "0xB2c86ccFBfbE235657a5d2556f2B3B1156A23283";
+  const xtrAddress = "0x086D459A513f10abec41B5839aF688f68EFE0abb";
   const crowdfunding = m.contract("Crowdfunding", [xtrAddress]);
   return { crowdfunding };
 });

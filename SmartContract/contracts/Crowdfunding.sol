@@ -21,7 +21,7 @@ contract Crowdfunding {
     event GoalReached();
     event CrowdfundingClosed();
 
-    constructor(address _tokenAddress) {
+    constructor(address _tokenAddress) payable {
         token = IERC20(_tokenAddress);
     }
 
@@ -97,7 +97,6 @@ contract Crowdfunding {
             }
         }
 
-        // Resize the array to remove empty slots
         address[] memory trimmedResult = new address[](index);
         for (uint256 i = 0; i < index; i++) {
             trimmedResult[i] = result[i];

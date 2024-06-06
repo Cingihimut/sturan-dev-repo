@@ -23,6 +23,9 @@ const Page = () => {
             <Link target="blank" href="https://sepolia.etherscan.io/token/0xb2c86ccfbfbe235657a5d2556f2b3b1156a23283">
               <Image src="/assets/etherscan-logo-circle.png" alt="etherscan" height={30} width={30} />
             </Link>
+            <Link target="blank" href="https://testnet.bscscan.com/token/0x2b2FF5967aB3E984f136515a11383BafD2efd82d">
+              <Image src="/assets/logo-symbol.png" alt="bscscan" height={30} width={30} />
+            </Link>
             <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}></path>

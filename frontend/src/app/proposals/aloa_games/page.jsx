@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { connectWeb3 } from "../../utils/web3";
 import CardSubmit from "../../../components/CardSubmit";
 import { getContributors } from "../../utils/contract";
+import GetReceipt from "@/app/dataContributor/GetReceipt";
 
 const Page = () => {
   const [account, setAccount] = useState(null);
@@ -109,6 +110,7 @@ const Page = () => {
             </button>
           </div>
         </div>
+        <GetReceipt contributors={contributors} />
       </div>
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} />}
     </div>
