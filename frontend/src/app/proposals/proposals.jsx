@@ -65,11 +65,11 @@ const ProposalCard = ({ title, status, description, endDate, goals, statusColor,
       </div>
       <p className="text-color-sky">{description}</p>
       <h1 className="mt-3 font-semibold">{endDate}</h1>
-      <div className="flex mt-2 gap-1">
+        <div className="flex mt-2 gap-3">
         <h1 className="text-color-typography font-semibold">{goals}</h1>
         <h1 className="font-semibold">Network:</h1>
         <p className="">{network}</p>
-      </div>
+        </div>
     </Link>
   </div>
 );
