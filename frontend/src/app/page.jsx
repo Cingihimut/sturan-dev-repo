@@ -51,7 +51,7 @@ const Page = () => {
         )}
       </header>
 
-      <div className="min-h-screen pt-20 lg:pt-0 px-4 lg:px-0 lg:pl-16">
+      <div className="bg-color-primary bg-opacity-10 min-h-screen pt-20 lg:pt-0 px-4 lg:px-0 lg:pl-16">
         <div className="lg:grid lg:grid-cols-10 lg:gap-4">
           <div className="hidden lg:block col-span-2 p-3 rounded-lg mt-10 border-opacity-10">
             <Image src="/assets/XTR-Logo.png" alt="xtr logo" width="50" height="50" className="mt-3 ml-3" />

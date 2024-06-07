@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Participate = () => {
   return (
-    <div className="lg:mt-0 lg:pr-16 ms:mx-6 md:-mt-8">
+    <div className="lg:mt-0 lg:pr-16 sm:mx-6 md:-mt-8">
       <p className="font-bold text-2xl mb-5 ml-4 lg:mt-10">Proposals</p>
       <div className="ml-4 mt-2">
         <span className="text-color-red">*If you find a bug in this website, please <Link href="mailto:singgihbrilian.tara06@gmail.com?subject=Bug%20Report&body=Please%20describe%20the%20bug%20you%20found%3A" className="underline">contact me</Link></span>
@@ -25,7 +25,7 @@ const Participate = () => {
           endDate="End 15 June 2024"
           goals="15.000 XTR"
           statusColor="bg-color-red"
-          network={<Image src="/assets/bnb.png" height="20" width="20" />}
+          network={<Image src="/assets/ethereum.png" height="20" width="20" />}
         />
         <ProposalCard
           title="Gamma Initiative"
@@ -51,7 +51,7 @@ const Participate = () => {
 };
 
 const ProposalCard = ({ title, status, description, endDate, goals, statusColor, network }) => (
-  <div className="border p-4 rounded-lg border-color-gray border-opacity-10 mb-5">
+  <div className="border p-4 rounded-lg border-color-gray border-opacity-10">
     <Link href={`/proposals/${title.toLowerCase().replace(/ /g, "_")}`}>
       <div className="flex justify-between items-center mb-2">
         <h1 className="font-bold">{title}</h1>

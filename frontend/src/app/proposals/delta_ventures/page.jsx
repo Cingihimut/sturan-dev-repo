@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { connectWeb3 } from "../../utils/web3";
 import { useState, useEffect } from "react";
-import CardSubmit from "../../../components/CardSubmit";
+// import DeltasCardSubmit from "@/components/DeltasCardSubmit";
+import CardSubmit from "@/components/CardSubmit";
 
 const Page = () => {
   const [account, setAccount] = useState(null);

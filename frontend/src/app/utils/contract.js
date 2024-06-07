@@ -1,6 +1,7 @@
 import { connectWeb3 } from "@/app/utils/web3";
 import Web3 from "web3";
 import contractABI from "../../contracts/Crowdfunding.json"
+import deltaVenturesAbi from "../../contracts/DeltaVentures.json"
 
 export const getConnectedAccount = async () => {
     try {
@@ -37,6 +38,17 @@ export const createContractInstance = async() => {
             "0x2599525F880BB04Ede7D174db9ad05d61026c0AD"
         );
         return contract
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+export const contractIstanceDeltaVenturesFund = async()=> {
+    try {
+        const web3 = await connectWeb3();
+        const contract = new web3.eth.Contract(deltaVenturesAbi.abi, "0x56E8561E577716585FCa7f90a60EE1856f9210AB");
+        return contract;
     } catch (error) {
         console.log(error);
         return null;
