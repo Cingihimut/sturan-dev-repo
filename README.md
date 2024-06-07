@@ -31,5 +31,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 Kontribusi
 Kontribusi dipersilakan! Silakan fork repositori ini dan buat Pull Request jika Anda memiliki perubahan yang ingin Anda tambahkan.
 
+Semua kode ini tersedia secara opensource untuk kepentingan belajar dan tidak di perbolehkan melakukan duplikasi tanpa persetujuan pemilik repo
+
 Lisensi
 Proyek ini dilisensikan di bawah MIT License - lihat file LICENSE untuk detail.
