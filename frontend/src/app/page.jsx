@@ -75,8 +75,8 @@ const Page = () => {
               </Link>
             </div>
             <div className="mt-4 flex ml-4 space-x-4">
-              <SocialIcon target="blank" url="https://x.com/" style={{ height: 30, width: 30 }} bgColor="#252559" />
-              <SocialIcon target="blank" url="https://discord.com/" style={{ height: 30, width: 30 }} bgColor="#252559" />
+              <SocialIcon target="blank" url="https://x.com/sturanet/" style={{ height: 30, width: 30 }} bgColor="#252559" />
+              <SocialIcon target="blank" url="https://github.com/Sturan-Dev" style={{ height: 30, width: 30 }} bgColor="#252559" />
               <Link target="blank" href="https://sepolia.etherscan.io/token/0xb2c86ccfbfbe235657a5d2556f2b3b1156a23283">
                 <Image src="/assets/etherscan-logo-circle.png" alt="etherscan" height={30} width={30} />
               </Link>
