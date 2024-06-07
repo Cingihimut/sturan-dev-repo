@@ -7,10 +7,6 @@ const Participate = () => {
       <p className="font-bold text-2xl mb-5 ml-4 lg:mt-10">Proposals</p>
       <div className="ml-4 mt-2">
         <span className="text-color-red">*If you find a bug in this website, please <Link href="mailto:singgihbrilian.tara06@gmail.com?subject=Bug%20Report&body=Please%20describe%20the%20bug%20you%20found%3A" className="underline">contact me</Link></span>
-        <br></br>
-        <span className="text-color-red">*BEP20 address: 0x2b2FF5967aB3E984f136515a11383BafD2efd82d</span>
-        <br></br>
-        <span className="text-color-red">*ERC20 address: 0x5F9E185CF5Fadc4b5F9a600Bd40178cd545e3A63</span>
       </div>
       <div className="mt-4 space-y-4 px-4">
         <ProposalCard
