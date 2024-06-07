@@ -4,7 +4,7 @@ import Link from "next/link";
 const Participate = () => {
   return (
     <div className="lg:mt-0 lg:pr-16 sm:mx-6 md:-mt-8">
-      <p className="font-bold text-2xl mb-5 ml-4 lg:mt-10">Proposals</p>
+      <p className="font-bold text-2xl mb-5 ml-4 lg:mt-3">Proposals</p>
       <div className="ml-4 mt-2">
         <span className="text-color-red">*If you find a bug in this website, please <Link href="mailto:singgihbrilian.tara06@gmail.com?subject=Bug%20Report&body=Please%20describe%20the%20bug%20you%20found%3A" className="underline">contact me</Link></span>
       </div>
