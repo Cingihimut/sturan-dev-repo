@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { getConnectedAccount, getTokenBalance } from "../app/utils/contract";
@@ -57,23 +57,23 @@ const CardSubmit = ({ onClose }) => {
 
     const handleSubmit = async () => {
         if (inputValue === '') {
-            console.log('Input value is empty');
-            return;
+          console.log('Input value is empty');
+          return;
         }
-    
+      
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x2599525F880BB04Ede7D174db9ad05d61026c0AD"; //crowdfunding contract
-    
-        const contributorAmountInWei = Web3.utils.toWei(contributionAmount.toString(), "ether");
-    
+        const crowdfundingAddress = "0x1BB16F49706853283eC79EF8C4Bf27e72E64D9A3";
+
+        const contributorAmountInWei = Web3.utils.toWei(contributionAmount.toString(), "ether")
+      
         try {
-            await fundCrowdfunding(contributionAmount);
-            console.log("Crowdfunding funded");
-            onClose();
+            await approveToken(crowdfundingAddress, contributorAmountInWei)
+          await fundCrowdfunding(contributionAmount);
+          onClose()
         } catch (error) {
-            console.error("Error submitting error:", error);
+          console.error("Error submitting error:", error);
         }
-    };
+      };
 
     return (
         <>

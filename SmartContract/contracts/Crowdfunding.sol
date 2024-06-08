@@ -86,22 +86,29 @@ contract Crowdfunding {
         return (name, goal, totalFunds, isGoalReached, isClosed);
     }
 
-    function getContributors() external view returns (address[] memory) {
-        address[] memory result = new address[](contributorsList.length);
-        uint256 index = 0;
+    function getContributors()
+        external
+        view
+        returns (address[] memory, uint256[] memory)
+    {
+        address[] memory contributorsAddresses = new address[](
+            contributorsList.length
+        );
+        uint256[] memory contributionsAmounts = new uint256[](
+            contributorsList.length
+        );
 
+        uint256 index = 0;
         for (uint256 i = 0; i < contributorsList.length; i++) {
-            if (contributions[contributorsList[i]] > 0) {
-                result[index] = contributorsList[i];
+            address contributor = contributorsList[i];
+            uint256 contribution = contributions[contributor];
+            if (contribution > 0) {
+                contributorsAddresses[index] = contributor;
+                contributionsAmounts[index] = contribution;
                 index++;
             }
         }
 
-        address[] memory trimmedResult = new address[](index);
-        for (uint256 i = 0; i < index; i++) {
-            trimmedResult[i] = result[i];
-        }
-
-        return trimmedResult;
+        return (contributorsAddresses, contributionsAmounts);
     }
 }

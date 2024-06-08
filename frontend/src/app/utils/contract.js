@@ -1,7 +1,6 @@
 import { connectWeb3 } from "@/app/utils/web3";
 import Web3 from "web3";
-import contractABI from "../../contracts/Crowdfunding.json"
-import deltaVenturesAbi from "../../contracts/DeltaVentures.json"
+import contractABI from "../../contracts/Crowdfunding.json";
 
 export const getConnectedAccount = async () => {
     try {
@@ -35,7 +34,7 @@ export const createContractInstance = async() => {
 
         const contract = new web3.eth.Contract(
             contractABI.abi,
-            "0x2599525F880BB04Ede7D174db9ad05d61026c0AD"
+            "0x1BB16F49706853283eC79EF8C4Bf27e72E64D9A3"
         );
         return contract
     } catch (error) {
@@ -62,18 +61,17 @@ export const getContributors = async () => {
             throw new Error("Failed to create contract instance");
         }
 
-        const contributors = await contract.methods.getContributors().call();
+        const [contributorsAddresses, contributionsAmounts] = await contract.methods.getContributors().call();
         const contributions = {};
 
-        for (let i = 0; i < contributors.length; i++) {
-            const contributor = contributors[i];
-            const contribution = await contract.methods.contributions(contributor).call();
-            contributions[contributor] = Number(contribution);
+        for (let i = 0; i < contributorsAddresses.length; i++) {
+            const contributor = contributorsAddresses[i];
+            const contribution = contributionsAmounts[i];
+            contributions[contributor] = Number(web3.utils.fromWei(contribution.toString(), 'ether'));
         }
 
         console.log("Contributions Fetched:", contributions);
         return contributions;
-        
     } catch (error) {
         console.error("Error fetching contributions", error);
         return {};

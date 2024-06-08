@@ -16,6 +16,14 @@ module.exports = {
       accounts: [private_key],
     }
   },
+  etherscan: {
+    apiKey: {
+      sepolia: etherscan_api_key
+    }
+  },
+  sourcify: {
+    enabled: true
+  },
   solidity: {
     version: "0.8.24",
     settings: {
@@ -23,14 +31,6 @@ module.exports = {
         enabled: true,
         runs: 200
       }
-    }
-  },
-  sourcify: {
-    enabled: true
-  },
-  etherscan: {
-    apiKey: {
-      sepolia: etherscan_api_key
     }
   },
   paths: {

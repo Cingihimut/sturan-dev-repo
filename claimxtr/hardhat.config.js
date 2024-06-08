@@ -18,7 +18,12 @@ module.exports = {
     }
   },
   etherscan: {
-    url: `https://api.etherscan.io/api?apikey=${etherscan_api_key}`
+    apiKey: {
+      sepolia: etherscan_api_key
+    }
+  },
+  sourcify: {
+    enabled: true
   },
   solidity: {
     version: "0.8.24",
