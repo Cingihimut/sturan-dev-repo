@@ -42,20 +42,3 @@ export const fundCrowdfunding = async (amount) => {
     return null;
   }
 };
-
-export const deltaVenturesFunding = async(amount) => {
-  try {
-    const web3 = await connectWeb3();
-    const deltaVentures = await contractIstanceDeltaVenturesFund();
-    const accounts = await web3.eth.getAccounts();
-    const sender = accounts[0];
-
-    const amountInWei = Web3.utils.toWei(amount.toString(), "ether")
-
-    const deltasTransaction = await deltaVentures.methods.fund(amountInWei.send({ form: sender }));
-    console.log("Delta Ventures transaction:", deltasTransaction);
-    return deltasTransaction.transactionHash;
-  } catch (error) {
-    console.log("Error funding in delta ventures", error);
-  }
-}

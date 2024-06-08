@@ -3,13 +3,11 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { connectWeb3 } from "../../utils/web3";
 import CardSubmit from "../../../components/CardSubmit";
-import { getContributors } from "../../utils/contract";
-import GetReceipt from "@/app/dataContributor/GetReceipt";
+import GetContributorAddress from "@/app/dataContributor/GetContributorAddress";
 
 const Page = () => {
   const [account, setAccount] = useState(null);
   const [showCardSubmit, setShowCardSubmit] = useState(false);
-  const [contributors, setContributors] = useState([]);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -25,20 +23,6 @@ const Page = () => {
     };
 
     checkConnection();
-  }, []);
-
-  useEffect(() => {
-    const fetchContributors = async () => {
-      try {
-        const contributorsList = await getContributors();
-        console.log("Fetched Contributor:", contributorsList);
-        setContributors(contributorsList);
-      } catch (error) {
-        console.error("Error fetching contributors", error);
-      }
-    };
-
-    fetchContributors();
   }, []);
 
   const handleConnect = async () => {
@@ -110,7 +94,7 @@ const Page = () => {
             </button>
           </div>
         </div>
-        <GetReceipt contributors={contributors} />
+        <GetContributorAddress />
       </div>
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} />}
     </div>
