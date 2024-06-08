@@ -49,16 +49,16 @@ const Page = () => {
   };
 
   return (
-    <div className={`bg-color-primary bg-opacity-10 ${showCardSubmit ? 'blur-background' : ''}`}>
+    <div className={`min-h-screen bg-color-primary bg-opacity-10 ${showCardSubmit ? 'blur-background' : ''}`}>
       <div className="p-6 md:p-16 lg:p-24">
         <div className="p-6 md:p-10 border-t-[2px] border-x-[2px] border-color-gray border-opacity-15 rounded-t-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="flex justify-center lg:justify-start">
             <Image
               alt="dummy nft"
               src="/assets/dummy foto.png"
-              height="300"
-              width="300"
-              className="mx-auto lg:mx-0"
+              height="400"
+              width="400"
+              className="mx-auto lg:mx-0 w-[300px] h-[300px]"
             />
           </div>
           <div className="lg:ml-8">
@@ -93,8 +93,10 @@ const Page = () => {
               Take Part
             </button>
           </div>
+          <div className="pt-3 overflow-hidden">
+            <GetContributorAddress />
+          </div>
         </div>
-        <GetContributorAddress />
       </div>
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} />}
     </div>

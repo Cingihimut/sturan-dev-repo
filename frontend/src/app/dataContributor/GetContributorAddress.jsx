@@ -9,10 +9,10 @@ const GetContributorAddress = () => {
 
     useEffect(() => {
         const fetchingData = async () => {
-            const contributorsData = await fetchingTransaction();
-            if (contributorsData) {
-                setContributors(contributorsData[0]);
-                setContributions(contributorsData[1]);
+            const [contributorsData, contributionsData] = await fetchingTransaction() || [];
+            if (contributorsData && contributionsData) {
+                setContributors(contributorsData);
+                setContributions(contributionsData);
             }
             setLoading(false);
         };
@@ -21,20 +21,20 @@ const GetContributorAddress = () => {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="text-center">Loading...</div>;
     }
 
     if (contributors.length === 0 || contributions.length === 0) {
-        return <div>No contributors found.</div>;
+        return <div className="text-center">No contributors found.</div>;
     }
 
     return (
-        <div className="mx-11 mt-8">
-            <ul>
+        <div className="border p-4 rounded shadow-sm overflow-x-auto whitespace-nowrap">
+            <ul className="space-y-4">
                 {contributors.map((contributor, index) => (
-                    <li key={index}>
-                        <p>Address: {contributor}</p>
-                        <p>Contribution: {contributions[index]}</p>
+                    <li key={index} className="">
+                        <p className="text-lg sm:text-base md:text-sm">Address: {contributor}</p>
+                        <p className="text-lg sm:text-base md:text-sm">Contribution: {contributions[index]} Xtr</p>
                     </li>
                 ))}
             </ul>
