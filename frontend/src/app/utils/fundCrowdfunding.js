@@ -1,5 +1,4 @@
 import { createContractInstance } from "./contract";
-import { contractIstanceDeltaVenturesFund } from "./contract";
 import { connectWeb3 } from "./web3";
 import xtrContractJson from "../../contracts/Xtr.json";
 import Web3 from "web3";
