@@ -53,27 +53,3 @@ export const contractIstanceDeltaVenturesFund = async()=> {
         return null;
     }
 }
-
-export const getContributors = async () => {
-    try {
-        const contract = await createContractInstance();
-        if (!contract) {
-            throw new Error("Failed to create contract instance");
-        }
-
-        const [contributorsAddresses, contributionsAmounts] = await contract.methods.getContributors().call();
-        const contributions = {};
-
-        for (let i = 0; i < contributorsAddresses.length; i++) {
-            const contributor = contributorsAddresses[i];
-            const contribution = contributionsAmounts[i];
-            contributions[contributor] = Number(web3.utils.fromWei(contribution.toString(), 'ether'));
-        }
-
-        console.log("Contributions Fetched:", contributions);
-        return contributions;
-    } catch (error) {
-        console.error("Error fetching contributions", error);
-        return {};
-    }
-};

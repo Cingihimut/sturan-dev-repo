@@ -25,9 +25,9 @@ const Page = () => {
       <div className="border-2 border-color-gray border-opacity-15 rounded-xl p-10 custom-shadow flex flex-col items-center">
         <div className="flex items-center justify-center w-40 h-40">
           {isClaimed ? (
-            <Image src="/assets/kado-terbuka.png" height="100" width="100" alt="kado terbuka" />
+            <Image src="/assets/kado-terbuka.png" height="100" width="100" alt="kado-terbuka" />
           ) : (
-            <Image src="/assets/kado-tertutup.png" height="100" width="100" alt="kado tertutup" />
+            <Image src="/assets/kado-tertutup.png" height="100" width="100" alt="kado-tertutup" />
           )}
         </div>
         <div className="mt-4 flex flex-col items-center">
