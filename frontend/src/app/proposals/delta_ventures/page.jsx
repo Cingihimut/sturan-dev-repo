@@ -10,15 +10,15 @@ const Page = () => {
         <div className="flex-1 pr-6 col-span-3">
           <div className="flex items-center gap-32 justify-between">
             <div className="mt-12 flex justify-between items-center gap-52">
-              <h1 className="text-2xl font-semibold">Badan Amal Indonesia</h1>
+              <h1 className="text-2xl font-semibold">African culture lovers community</h1>
               <button className="py-2 px-6 border-[2px] border-color-neutral rounded-full">Share</button>
             </div>
           </div>
           <div className="mt-6">
-            <h1 className="text-3xl font-bold">Palestine Need Your Hand, help us for humanity🌎</h1>
+            <h1 className="text-3xl font-bold">African children need our help🙇‍♂️🙇‍♀️</h1>
             <div className="flex gap-4 mt-3">
               <p className="border-[2px] p-1 border-color-green rounded-full bg-color-green bg-opacity-25">Ongoing</p>
-              <p className="border-[2px] p-1 border-color-green rounded-full bg-color-green bg-opacity-25">20/6/2024 ~ 20/7/2024</p>
+              <p className="border-[2px] p-1 border-color-green rounded-full bg-color-green bg-opacity-25">15/6/2024 ~ 28/7/2024</p>
             </div>
           </div>
           <div className="mt-12">

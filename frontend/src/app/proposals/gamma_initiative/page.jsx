@@ -3,6 +3,7 @@ import Image from "next/image";
 import SideBarReward from "@/components/SideBarReward";
 import { useState } from "react";
 import Close from "@/components/alert/Close";
+import GetContributorAddress from "@/app/dataContributor/GetContributorAddress";
 
 const Page = () => {
 
@@ -23,15 +24,15 @@ const Page = () => {
         <div className="flex-1 pr-6 col-span-3">
           <div className="flex items-center gap-32 justify-between">
             <div className="mt-12 flex justify-between items-center gap-52">
-              <h1 className="text-2xl font-semibold">Badan Amal Indonesia</h1>
+              <h1 className="text-2xl font-semibold">Wild horse milk lovers</h1>
               <button className="py-2 px-6 border-[2px] border-color-neutral rounded-full">Share</button>
             </div>
           </div>
           <div className="mt-6">
-            <h1 className="text-3xl font-bold">Palestine Need Your Hand, help us for humanity🌎</h1>
+            <h1 className="text-3xl font-bold">Whether you give a little or a lot, it is very helpful.🐴</h1>
             <div className="flex gap-4 mt-3">
-              <p className="border-[2px] p-1 border-color-red rounded-full bg-color-red bg-opacity-25">Pending</p>
-              <p className="border-[2px] p-1 border-color-red rounded-full bg-color-red bg-opacity-25">20/6/2024 ~ 20/7/2024</p>
+              <p className="border-[2px] p-1 border-color-red rounded-full bg-color-red bg-opacity-25">Close</p>
+              <p className="border-[2px] p-1 border-color-red rounded-full bg-color-red bg-opacity-25">20/3/2024 ~ 20/4/2024</p>
             </div>
           </div>
           <div className="mt-12">
@@ -82,7 +83,7 @@ const Page = () => {
               </div>
               <h1 className="mt-6 font-semibold text-2xl">Paticipates:</h1>
               <div className="pt-3 overflow-hidden">
-                {/* <GetContributorAddress /> */}
+                <GetContributorAddress />
               </div>
               {/* {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} />} */}
             </div>
