@@ -89,7 +89,7 @@ const CardSubmit = ({ onClose }) => {
             )}
             {showCardSubmit && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-                    <div className="relative bg-color-primary max-w-sm rounded overflow-hidden shadow-lg bg-white backdrop-filter-none">
+                    <div className="relative max-w-sm rounded overflow-hidden shadow-lg bg-white backdrop-filter-none">
                         <button onClick={onClose} className="absolute top-0 right-0 mt-2 mr-2 bg-red-500 text-white rounded-full px-2 py-1">
                             <X size={32} />
                         </button>
