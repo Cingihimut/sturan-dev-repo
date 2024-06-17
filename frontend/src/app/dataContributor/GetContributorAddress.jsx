@@ -33,7 +33,7 @@ const GetContributorAddress = () => {
             <ul className="space-y-4">
                 {contributors.map((contributor, index) => (
                     <li key={index} className="">
-                        <p className="text-lg sm:text-base md:text-sm">Address: {contributor}</p>
+                        <p className="text-lg sm:text-base md:text-sm">Address: {contributor.slice(0,20)}</p>
                         <p className="text-lg sm:text-base md:text-sm">Contribution: {contributions[index]} Xtr</p>
                     </li>
                 ))}

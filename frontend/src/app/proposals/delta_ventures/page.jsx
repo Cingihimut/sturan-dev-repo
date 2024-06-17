@@ -1,103 +1,41 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
-import { connectWeb3 } from "../../utils/web3";
-import { useState, useEffect } from "react";
-// import DeltasCardSubmit from "@/components/DeltasCardSubmit";
-import CardSubmit from "@/components/CardSubmit";
+import SideBarReward from "@/components/SideBarReward";
 
 const Page = () => {
-  const [account, setAccount] = useState(null);
-  const [showCardSubmit, setShowCardSubmit] = useState(false);
-
-  useEffect(() => {
-    const checkConnection = async () => {
-      try {
-        const web3Instance = await connectWeb3();
-        const accounts = await web3Instance.eth.getAccounts();
-        if (accounts.length > 0) {
-          setAccount(accounts[0]);
-        }
-      } catch (error) {
-        console.error("Error checking connection", error);
-      }
-    };
-
-    checkConnection();
-  }, []);
-
-  const handleConnect = async () => {
-    try {
-      const web3Instance = await connectWeb3();
-      const accounts = await web3Instance.eth.getAccounts();
-      setAccount(accounts[0]);
-    } catch (error) {
-      console.error("Connection Failed", error);
-    }
-  };
-
-  const handleTakePartClick = async () => {
-    if (!account) {
-      await handleConnect();
-    }
-    if (account) {
-      setShowCardSubmit(true);
-    }
-  };
-
-  const handleCloseCardSubmit = () => {
-    setShowCardSubmit(false);
-  };
 
   return (
-    <div className={`bg-color-primary bg-opacity-10 ${showCardSubmit ? 'blur-background' : ''}`}>
-      <div className="p-6 md:p-16 lg:p-24">
-        <div className="p-6 md:p-10 border-t-[2px] border-x-[2px] border-color-gray border-opacity-15 rounded-t-lg grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="flex justify-center lg:justify-start">
-            <Image
-              alt="dummy nft"
-              src="/assets/dummy foto.png"
-              height="300"
-              width="300"
-              className="mx-auto lg:mx-0"
-            />
+    <div className="min-h-screen bg-opacity-10">
+      <div className="ml-12 grid grid-cols-5 ">
+        <div className="flex-1 pr-6 col-span-3">
+          <div className="flex items-center gap-32 justify-between">
+            <div className="mt-12 flex justify-between items-center gap-52">
+              <h1 className="text-2xl font-semibold">Badan Amal Indonesia</h1>
+              <button className="py-2 px-6 border-[2px] border-color-neutral rounded-full">Share</button>
+            </div>
           </div>
-          <div className="lg:ml-8">
-            <h1 className="font-bold text-xl md:text-2xl lg:text-3xl">Delta Ventures</h1>
-            <p className="mt-2 md:mt-4">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni,
-              quae voluptate fugit obcaecati rem sapiente at quia eaque. Aliquam
-              delectus unde eos officiis cum velit quos dolore amet qui
-              voluptate!
-            </p>
-            <p className="mt-2 md:mt-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
+          <div className="mt-6">
+            <h1 className="text-3xl font-bold">Palestine Need Your Hand, help us for humanity🌎</h1>
+            <div className="flex gap-4 mt-3">
+              <p className="border-[2px] p-1 border-color-green rounded-full bg-color-green bg-opacity-25">Ongoing</p>
+              <p className="border-[2px] p-1 border-color-green rounded-full bg-color-green bg-opacity-25">20/6/2024 ~ 20/7/2024</p>
+            </div>
           </div>
+          <div className="mt-12">
+            <h1 className="font-semibold text-3xl">Article</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni ducimus voluptate nulla voluptatum suscipit eaque, at nesciunt asperiores deleniti culpa nobis odit, ullam eum, accusantium assumenda quaerat necessitatibus! Iste, eum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi tempora esse inventore nemo temporibus ipsa. Quaerat similique suscipit tenetur excepturi nam illo voluptatibus soluta, deleniti omnis aspernatur blanditiis sunt consequatur?</p>
+            <div className="flex justify-center items-center mt-4">
+              <Image src="/assets/dummy-foto.png" height="400" width="400" alt="..." />
+            </div>
+            <p className="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni ducimus voluptate nulla voluptatum suscipit eaque, at nesciunt asperiores deleniti culpa nobis odit, ullam eum, accusantium assumenda quaerat necessitatibus! Iste, eum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi tempora esse inventore nemo temporibus ipsa. Quaerat similique suscipit tenetur excepturi nam illo voluptatibus soluta, deleniti omnis aspernatur blanditiis sunt consequatur?</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni ducimus voluptate nulla voluptatum suscipit eaque, at nesciunt asperiores deleniti culpa nobis odit, ullam eum, accusantium assumenda quaerat necessitatibus! Iste, eum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi tempora esse inventore nemo temporibus ipsa. Quaerat similique suscipit tenetur excepturi nam illo voluptatibus soluta, deleniti omnis aspernatur blanditiis sunt consequatur?</p>
+          </div>
+          <h1 className="mt-7 text-2xl font-semibold">Explore</h1>
         </div>
-        <div className="mx-6 md:mx-10 lg:mx-16 mt-6 md:mt-8 lg:mt-10">
-          <h1 className="text-lg md:text-xl lg:text-2xl">Detail projects</h1>
-          <p className="mt-2 md:mt-4 lg:mt-6">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-            enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat.
-          </p>
-          <div className="mt-4 md:mt-6 lg:mt-8">
-            <Link
-              href="#"
-              onClick={handleTakePartClick}
-              className="p-2 md:p-3 lg:p-4 bg-color-primary rounded-full hover:bg-opacity-50 transition-all ease-linear"
-            >
-              Take Part
-            </Link>
-          </div>
+        <div className="border-l-2 border-color-neutral col-span-2">
+          <SideBarReward />
         </div>
       </div>
-      {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} />}
     </div>
   );
 };

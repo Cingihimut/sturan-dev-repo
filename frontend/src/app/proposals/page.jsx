@@ -19,7 +19,7 @@ const Participate = () => {
             <p className="mt-2">20000XTR</p>
           </div>
         </Link>
-        <Link href="#" className="border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300">
+        <Link href="/proposals/beta_project" className="border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300">
           <div className="flex justify-center">
             <Image src="/assets/dummy-member.jpeg" height="250" width="250" alt="..." className="p-4" />
           </div>
@@ -32,7 +32,7 @@ const Participate = () => {
             <p className="mt-2">20000XTR</p>
           </div>
         </Link>
-        <Link href="#" className="border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300">
+        <Link href="/proposals/gamma_initiative" className="border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300">
           <div className="flex justify-center">
             <Image src="/assets/dummy-member.jpeg" height="250" width="250" alt="..." className="p-4" />
           </div>
@@ -45,7 +45,7 @@ const Participate = () => {
             <p className="mt-2">20000XTR</p>
           </div>
         </Link>
-        <Link href="#" className="border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300">
+        <Link href="/proposals/delta_ventures" className="border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300">
           <div className="flex justify-center">
             <Image src="/assets/dummy-member.jpeg" height="250" width="250" alt="..." className="p-4" />
           </div>
