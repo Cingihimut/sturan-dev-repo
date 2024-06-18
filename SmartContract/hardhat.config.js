@@ -17,6 +17,10 @@ module.exports = {
       accounts: [private_key],
     }
   },
+  gannache: {
+    url: "HTTP://127.0.0.1:7545",
+    accounts: ["0xd4d47dc9227fa5bf36a6157002e44b634798295123c7b634cbbd829871f9f0a4"],
+  },
   etherscan: {
     apiKey:{
       sepolia: etherscan_api_key
