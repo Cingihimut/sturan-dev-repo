@@ -8,20 +8,20 @@ contract Crowdfunding is Ownable {
     struct Campaign {
         uint256 id;
         string name;
-        uint256 goal; //goals campaign
-        uint256 maxContribution; //maximum user can contribute using xtr
-        uint256 maxContrubutor; //maximum address can contribute
+        uint256 goal;
+        uint256 maxContribution;
+        uint256 maxContrubutor;
         uint256 duration;
         uint256 startTime;
         uint256 endTime;
         bool isOpen;
         address[] contributors;
-        mapping(address => uint) contributions;
+        mapping(address => uint256) contributions;
     }
 
     IERC20 private token;
     Campaign[] public campaigns;
-    mapping(address => uint256) public contributors;
+    mapping(address => uint256) public contributorCampaigns;
 
     event CampaignCreated(
         uint256 indexed id,
@@ -45,10 +45,7 @@ contract Crowdfunding is Ownable {
         uint256 amount
     );
 
-    constructor(
-        address _tokenAddress,
-        address initialOwner
-    ) payable Ownable(initialOwner) {
+    constructor(address _tokenAddress, address initialOwner) payable Ownable(initialOwner) {
         token = IERC20(_tokenAddress);
     }
 
@@ -74,14 +71,56 @@ contract Crowdfunding is Ownable {
         emit CampaignCreated(campaignId, name, goal, duration);
     }
 
+    function getCampaignCount() external view returns (uint256) {
+        return campaigns.length;
+    }
+
+    function getCampaignById(uint256 campaignId) 
+        external 
+        view 
+        returns (
+            uint256 id,
+            string memory name,
+            uint256 goal,
+            uint256 maxContribution,
+            uint256 maxContributor,
+            uint256 duration,
+            uint256 startTime,
+            uint256 endTime,
+            bool isOpen,
+            address[] memory contributors,
+            uint256[] memory contributions
+        ) 
+    {
+        Campaign storage campaign = campaigns[campaignId];
+
+        uint256[] memory contributionAmounts = new uint256[](campaign.contributors.length);
+        for (uint256 i = 0; i < campaign.contributors.length; i++) {
+            contributionAmounts[i] = campaign.contributions[campaign.contributors[i]];
+        }
+
+        return (
+            campaign.id,
+            campaign.name,
+            campaign.goal,
+            campaign.maxContribution,
+            campaign.maxContrubutor,
+            campaign.duration,
+            campaign.startTime,
+            campaign.endTime,
+            campaign.isOpen,
+            campaign.contributors,
+            contributionAmounts
+        );
+    }
+
     function contribute(uint256 campaignId, uint256 amount) external {
         Campaign storage campaign = campaigns[campaignId];
         require(campaign.isOpen, "Campaign is not open");
         require(block.timestamp < campaign.endTime, "Campaign is closed");
 
         require(
-            campaign.contributions[msg.sender] + amount <=
-                campaign.maxContribution,
+            campaign.contributions[msg.sender] + amount <= campaign.maxContribution,
             "Exceeds maximum contribution per contributor"
         );
         require(
@@ -94,7 +133,7 @@ contract Crowdfunding is Ownable {
 
         if (campaign.contributions[msg.sender] == amount) { // new contributor
             campaign.contributors.push(msg.sender);
-            contributors[msg.sender] = campaignId + 1;
+            contributorCampaigns[msg.sender] = campaignId + 1;
         }
 
         emit ContributionMade(campaignId, msg.sender, amount);
@@ -125,11 +164,9 @@ contract Crowdfunding is Ownable {
         emit ContributionRefunded(campaignId, msg.sender, amount);
     }
 
-    function getCampaignDetails(
-        uint256 campaignId
-    )
-        external
-        view
+    function getCampaignDetails(uint256 campaignId) 
+        external 
+        view 
         returns (
             string memory name,
             uint256 goal,
@@ -139,7 +176,7 @@ contract Crowdfunding is Ownable {
             uint256 startTime,
             uint256 endTime,
             bool isOpen
-        )
+        ) 
     {
         Campaign storage campaign = campaigns[campaignId];
         return (
@@ -154,19 +191,24 @@ contract Crowdfunding is Ownable {
         );
     }
 
-    function getContributorStatus(
-        address contributor
-    ) external view returns (bool) {
-        return contributors[contributor] != 0;
+    function getContributors(uint256 campaignId) 
+        external 
+        view 
+        returns (address[] memory) 
+    {
+        return campaigns[campaignId].contributors;
     }
 
     function withdrawToken(address to, uint256 amount) external onlyOwner {
         token.transfer(to, amount);
     }
 
-    function getContributors(
-        uint256 campaignId
-    ) external view returns (address[] memory) {
-        return campaigns[campaignId].contributors;
+    function getContributorStatus(address account) external view returns (bool, uint256) {
+        uint256 campaignId = contributorCampaigns[account];
+        if (campaignId == 0) {
+            return (false, 0);
+        } else {
+            return (true, campaignId - 1);
+        }
     }
 }

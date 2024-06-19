@@ -3,15 +3,18 @@ import { createContractInstance } from "./contract";
 export const fetchCrowdfundingData = async () => {
     try {
         const contract = await createContractInstance();
-        const [name, description, goal, totalFunds, isGoalReached, isClosed] = await contract.methods.getDetails().call();
+        const [ id, name, maxContribution, maxContributor, goal, duration, startTime, endTime, isOpen] = await contract.methods.getCampaignDetails().call();
 
         return {
+            id,
             name,
-            description,
             goal: Number(goal),
-            totalFunds: Number(totalFunds),
-            isGoalReached,
-            isClosed
+            maxContribution,
+            maxContributor,
+            duration,
+            startTime,
+            endTime,
+            isOpen
         };
     } catch (error) {
         console.error("Error fetching crowdfunding data:", error);

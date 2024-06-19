@@ -19,7 +19,8 @@ contract NftSturanNetwork is ERC1155, Ownable {
 
     function canMint(address account) public view returns (bool) {
         Crowdfunding crowdfunding = Crowdfunding(crowdfundingContract);
-        return crowdfunding.getContributorStatus(account);
+        (bool isContributor, ) = crowdfunding.getContributorStatus(account);
+        return isContributor;
     }
 
     function mint(address account, uint256 id, uint256 amount, bytes memory data) public onlyOwner {
