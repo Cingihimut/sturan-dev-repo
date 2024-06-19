@@ -60,7 +60,7 @@ const Participate = () => {
             <p className="mt-2">28/7/2024</p>
             <p className="mt-2">40000XTR</p>
           </div>
-          <p className="mt-2 p-2 bg-color-secondary bg-opacity-35 border-2 border-color-secondary rounded-full text-center">Pending</p>
+          <p className="mt-2 p-2 bg-color-green bg-opacity-35 border-2 border-color-green rounded-full text-center">Ongoing</p>
         </Link>
       </div>
     </div>
