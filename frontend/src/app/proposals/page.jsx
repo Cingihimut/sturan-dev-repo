@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import { getCampaigns } from '@/app/utils/contract';
 import Link from 'next/link';
