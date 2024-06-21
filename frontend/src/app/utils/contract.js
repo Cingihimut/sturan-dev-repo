@@ -2,7 +2,7 @@ import { connectWeb3 } from "@/app/utils/web3";
 import Web3 from "web3";
 import crowdfundingABI from "../../contracts/Crowdfunding.json";
 
-const contractAddress = "0x07312672E6B5CD27642d013333c4485b8e61B311";
+const contractAddress = "0x5535658acAA103e8a64E68Ec524dB48Ef89d0B25";
 
 export const getConnectedAccount = async () => {
     try {
@@ -42,19 +42,19 @@ export const getCampaigns = async () => {
         const campaigns = [];
 
         for (let i = 0; i < campaignCount; i++) {
-            const campaign = await contract.methods.getCampaignById(i).call();
+            const campaign = await contract.methods.campaigns(i).call();
             campaigns.push({
-                id: campaign[0],
-                name: campaign[1],
-                goal: campaign[2],
-                maxContribution: campaign[3],
-                maxContributor: campaign[4],
-                duration: campaign[5],
-                startTime: campaign[6],
-                endTime: campaign[7],
-                isOpen: campaign[8],
-                contributors: campaign[9],
-                contributions: campaign[10]
+                id: i, // Adjusted to match the index
+                name: campaign.name,
+                goal: campaign.goal,
+                maxContribution: campaign.maxContribution,
+                maxContributor: campaign.maxContributor,
+                duration: campaign.duration,
+                startTime: campaign.startTime,
+                endTime: campaign.endTime,
+                isOpen: campaign.isOpen,
+                contributors: campaign.contributors,
+                contributions: campaign.contributions
             });
         }
 
@@ -80,22 +80,24 @@ export const createCampaign = async (name, goal, maxContribution, maxContributor
 
 export const getCampaignDetails = async (campaignId) => {
     try {
-      const contract = await createContractInstance();
-      const campaign = await contract.methods.getCampaignDetails(campaignId).call();
-  
-      return {
-        id: campaignId,
-        name: campaign[0],
-        goal: campaign[1],
-        maxContribution: campaign[2],
-        maxContributor: campaign[3],
-        duration: campaign[4],
-        startTime: campaign[5],
-        endTime: campaign[6],
-        isOpen: campaign[7]
-      }
+        const contract = await createContractInstance();
+        const campaign = await contract.methods.getCampaignDetails(campaignId).call();
+    
+        return {
+            id: campaignId,
+            name: campaign[0],
+            goal: campaign[1],
+            maxContribution: campaign[2],
+            maxContributor: campaign[3],
+            duration: campaign[4],
+            startTime: campaign[5],
+            endTime: campaign[6],
+            isOpen: campaign[7],
+            contributors: campaign[8],
+            contributions: campaign[9]
+        };
     } catch (error) {
-      console.error("Error fetching campaign details", error);
-      throw error;
+        console.error("Error fetching campaign details", error);
+        throw error;
     }
-}
+};

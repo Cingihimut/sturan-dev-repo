@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { connectWeb3 } from "../app/utils/web3";
 import CardSubmit from "./CardSubmit";
-import GetContributorAddress from "@/app/dataContributor/GetContributorAddress";
+import GetContributor from "@/app/dataContributor/GetContributor";
 
 const SideBarReward = () => {
   const [account, setAccount] = useState(null);
@@ -41,7 +41,7 @@ const SideBarReward = () => {
       await handleConnect();
     }
     if (account) {
-      setCampaignId(1);  // Set nilai campaignId sesuai dengan ID yang diinginkan
+      setCampaignId(1);
       setShowCardSubmit(true);
     }
   };
@@ -71,7 +71,7 @@ const SideBarReward = () => {
       </div>
       <h1 className="mt-6 text-xl lg:text-2xl font-semibold">Participates:</h1>
       <div className="pt-3 overflow-hidden">
-        <GetContributorAddress />
+        <GetContributor />
       </div>
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />}
     </div>

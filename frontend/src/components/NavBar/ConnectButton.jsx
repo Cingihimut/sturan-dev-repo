@@ -37,7 +37,6 @@ const ConnectButton = () => {
         setIsContractOwner(false);
         disconnectWeb3();  // Clear web3 instance
 
-        // Prompt user to manually disconnect from MetaMask
         if (window.ethereum && window.ethereum.isMetaMask) {
             window.ethereum.request({
                 method: "wallet_requestPermissions",

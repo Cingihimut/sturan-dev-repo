@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { createCampaign } from '@/app/utils/contract';
+import Web3 from 'web3';
 
 const OwnerDashboard = () => {
   const [form, setForm] = useState({
@@ -25,7 +26,12 @@ const OwnerDashboard = () => {
       const endTimeTimestamp = Math.floor(new Date(form.endTime).getTime() / 1000);
       const duration = endTimeTimestamp - currentTimestamp;
 
-      await createCampaign(form.name, form.goal, form.maxContribution, form.maxContributor, duration);
+      // Convert values to the smallest unit (assuming 18 decimals)
+      const goalInWei = Web3.utils.toWei(form.goal.toString(), 'ether');
+      const maxContributionInWei = Web3.utils.toWei(form.maxContribution.toString(), 'ether');
+      const maxContributor = parseInt(form.maxContributor, 10); // Ensure maxContributor is an integer
+
+      await createCampaign(form.name, goalInWei, maxContributionInWei, maxContributor.toString(), duration);
       alert('Campaign created successfully!');
     } catch (error) {
       console.error("Error creating campaign", error);

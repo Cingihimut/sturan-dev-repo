@@ -66,7 +66,7 @@ const CardSubmit = ({ onClose, campaignId }) => {
         }
 
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x07312672E6B5CD27642d013333c4485b8e61B311";
+        const crowdfundingAddress = "0x5535658acAA103e8a64E68Ec524dB48Ef89d0B25";
 
         try {
             await approveToken(crowdfundingAddress, contributionAmount);
