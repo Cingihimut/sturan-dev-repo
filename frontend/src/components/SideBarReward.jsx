@@ -8,6 +8,7 @@ import GetContributorAddress from "@/app/dataContributor/GetContributorAddress";
 const SideBarReward = () => {
   const [account, setAccount] = useState(null);
   const [showCardSubmit, setShowCardSubmit] = useState(false);
+  const [campaignId, setCampaignId] = useState(null);  // Tambahkan state untuk campaignId
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -40,6 +41,7 @@ const SideBarReward = () => {
       await handleConnect();
     }
     if (account) {
+      setCampaignId(1);  // Set nilai campaignId sesuai dengan ID yang diinginkan
       setShowCardSubmit(true);
     }
   };
@@ -71,7 +73,7 @@ const SideBarReward = () => {
       <div className="pt-3 overflow-hidden">
         <GetContributorAddress />
       </div>
-      {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} />}
+      {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />}
     </div>
   );
 };

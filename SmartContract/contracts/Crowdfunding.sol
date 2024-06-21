@@ -3,14 +3,17 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract Crowdfunding is Ownable {
+    using SafeERC20 for IERC20;
+    
     struct Campaign {
         uint256 id;
         string name;
         uint256 goal;
         uint256 maxContribution;
-        uint256 maxContrubutor;
+        uint256 maxContributor;
         uint256 duration;
         uint256 startTime;
         uint256 endTime;
@@ -45,7 +48,7 @@ contract Crowdfunding is Ownable {
         uint256 amount
     );
 
-    constructor(address _tokenAddress, address initialOwner) payable Ownable(initialOwner) {
+    constructor(address _tokenAddress, address initialOwner) Ownable(initialOwner) {
         token = IERC20(_tokenAddress);
     }
 
@@ -63,7 +66,7 @@ contract Crowdfunding is Ownable {
         newCampaign.name = name;
         newCampaign.goal = goal;
         newCampaign.maxContribution = maxContribution;
-        newCampaign.maxContrubutor = maxContributor;
+        newCampaign.maxContributor = maxContributor;
         newCampaign.duration = duration;
         newCampaign.startTime = block.timestamp;
         newCampaign.endTime = block.timestamp + duration;
@@ -104,7 +107,7 @@ contract Crowdfunding is Ownable {
             campaign.name,
             campaign.goal,
             campaign.maxContribution,
-            campaign.maxContrubutor,
+            campaign.maxContributor,
             campaign.duration,
             campaign.startTime,
             campaign.endTime,
@@ -118,23 +121,23 @@ contract Crowdfunding is Ownable {
         Campaign storage campaign = campaigns[campaignId];
         require(campaign.isOpen, "Campaign is not open");
         require(block.timestamp < campaign.endTime, "Campaign is closed");
-
         require(
             campaign.contributions[msg.sender] + amount <= campaign.maxContribution,
             "Exceeds maximum contribution per contributor"
         );
         require(
-            campaign.contributors.length < campaign.maxContrubutor,
+            campaign.contributors.length < campaign.maxContributor,
             "Exceeds maximum contributors"
         );
 
-        token.transferFrom(msg.sender, address(this), amount);
         campaign.contributions[msg.sender] += amount;
 
-        if (campaign.contributions[msg.sender] == amount) { // new contributor
+        if (campaign.contributions[msg.sender] == amount) {
             campaign.contributors.push(msg.sender);
             contributorCampaigns[msg.sender] = campaignId + 1;
         }
+
+        token.safeTransferFrom(msg.sender, address(this), amount);
 
         emit ContributionMade(campaignId, msg.sender, amount);
     }
@@ -159,7 +162,7 @@ contract Crowdfunding is Ownable {
         require(amount > 0, "No contribution to refund");
 
         campaign.contributions[msg.sender] = 0;
-        token.transfer(msg.sender, amount);
+        token.safeTransfer(msg.sender, amount);
 
         emit ContributionRefunded(campaignId, msg.sender, amount);
     }
@@ -183,7 +186,7 @@ contract Crowdfunding is Ownable {
             campaign.name,
             campaign.goal,
             campaign.maxContribution,
-            campaign.maxContrubutor,
+            campaign.maxContributor,
             campaign.duration,
             campaign.startTime,
             campaign.endTime,
@@ -200,7 +203,7 @@ contract Crowdfunding is Ownable {
     }
 
     function withdrawToken(address to, uint256 amount) external onlyOwner {
-        token.transfer(to, amount);
+        token.safeTransfer(to, amount);
     }
 
     function getContributorStatus(address account) external view returns (bool, uint256) {

@@ -2,15 +2,14 @@
 import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { getConnectedAccount, getTokenBalance } from "../app/utils/contract";
-import { fundCrowdfunding, approveToken } from "../app/utils/fundCrowdfunding";
+import { contribute, approveToken } from "../app/utils/contributeCampaign";
 import contractJson from "../contracts/Xtr.json";
-import Web3 from "web3";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
 const XTRAddress = "0x086D459A513f10abec41B5839aF688f68EFE0abb";
 
-const CardSubmit = ({ onClose }) => {
+const CardSubmit = ({ onClose, campaignId }) => {
     const [inputValue, setInputValue] = useState('');
     const [account, setAccount] = useState(null);
     const [XTRBalance, setXTRBalance] = useState(null);
@@ -50,31 +49,35 @@ const CardSubmit = ({ onClose }) => {
 
     const handleChange = (event) => {
         const value = event.target.value;
-        if (/^\d*$/.test(value)) {
+        if (/^\d*\.?\d*$/.test(value)) {
             setInputValue(value);
         }
-    };
-
+    }; 
+    
     const handleSubmit = async () => {
+        if (!campaignId) {
+            console.error("Campaign ID is undefined");
+            return;
+        }
+
         if (inputValue === '') {
-          console.log('Input value is empty');
-          return;
+            console.log('Input value is empty');
+            return;
         }
-      
+
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x95B29d870fB5F43e1DC99278343e28248A170708";
+        const crowdfundingAddress = "0x07312672E6B5CD27642d013333c4485b8e61B311";
 
-        const contributorAmountInWei = Web3.utils.toWei(contributionAmount.toString(), "ether")
-      
         try {
-            await approveToken(crowdfundingAddress, contributorAmountInWei)
-          await fundCrowdfunding(contributionAmount);
-          onClose()
+            await approveToken(crowdfundingAddress, contributionAmount);
+            console.log("Approval successful");
+            const transactionHash = await contribute(campaignId, contributionAmount);
+            console.log("Contribution successful, transaction hash:", transactionHash);
+            onClose();
         } catch (error) {
-          console.error("Error submitting error:", error);
+            console.error("Error submitting contribution:", error);
         }
-      };
-
+    };
     return (
         <>
             {showDontHaveBalancePopup && (
@@ -99,7 +102,7 @@ const CardSubmit = ({ onClose }) => {
                         </div>
                         <div className="px-6 pt-4 pb-2">
                             <input
-                                type="number"
+                                type="text"
                                 className="border-[2px] rounded-full border-opacity-20 border-color-gray p-1"
                                 placeholder="Input Number"
                                 value={inputValue}

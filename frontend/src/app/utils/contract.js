@@ -1,8 +1,8 @@
 import { connectWeb3 } from "@/app/utils/web3";
 import Web3 from "web3";
-import contractABI from "../../contracts/Crowdfunding.json";
+import crowdfundingABI from "../../contracts/Crowdfunding.json";
 
-const contractAddress = "0x95B29d870fB5F43e1DC99278343e28248A170708";
+const contractAddress = "0x07312672E6B5CD27642d013333c4485b8e61B311";
 
 export const getConnectedAccount = async () => {
     try {
@@ -32,7 +32,7 @@ export const getTokenBalance = async (account, contractAbi, contractAddress) => 
 
 export const createContractInstance = async () => {
     const web3 = await connectWeb3();
-    return new web3.eth.Contract(contractABI.abi, contractAddress);
+    return new web3.eth.Contract(crowdfundingABI.abi, contractAddress);
 };
 
 export const getCampaigns = async () => {
@@ -68,12 +68,8 @@ export const getCampaigns = async () => {
 export const createCampaign = async (name, goal, maxContribution, maxContributor, duration) => {
     try {
         const web3Instance = await connectWeb3();
-        const contract = new web3Instance.eth.Contract(contractABI.abi, contractAddress);
+        const contract = await createContractInstance();
         const accounts = await web3Instance.eth.getAccounts();
-
-        if (!contract.methods.addCampaign) {
-            throw new Error("Method addCampaign not found on contract");
-        }
 
         await contract.methods.addCampaign(name, goal, maxContribution, maxContributor, duration).send({ from: accounts[0] });
     } catch (error) {
@@ -102,5 +98,4 @@ export const getCampaignDetails = async (campaignId) => {
       console.error("Error fetching campaign details", error);
       throw error;
     }
-  }
-  
+}

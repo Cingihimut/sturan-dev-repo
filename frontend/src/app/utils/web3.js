@@ -3,7 +3,7 @@ import contractAbi from "../../contracts/Crowdfunding.json"
 import { createContractInstance } from "./contract";
 
 let web3;
-const contractAddress = "0x95B29d870fB5F43e1DC99278343e28248A170708";
+const contractAddress = "0x07312672E6B5CD27642d013333c4485b8e61B311";
 
 const setInfuraSepoliaNetwork = async () => {
     const networkName = "Sepolia Sturan Network";
@@ -80,6 +80,7 @@ export const connectWeb3 = async () => {
                 reject(error);
             }
         } else {
+            const provider = web3.providers.HttpProvider("https://sturan-equity-crowdfunding.vercel.app/");
             reject(new Error("Please use MetaMask to connect."));
         }
     });
