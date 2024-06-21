@@ -1,6 +1,9 @@
 import Web3 from "web3";
+import contractAbi from "../../contracts/Crowdfunding.json"
+import { createContractInstance } from "./contract";
 
 let web3;
+const contractAddress = "0x95B29d870fB5F43e1DC99278343e28248A170708";
 
 const setInfuraSepoliaNetwork = async () => {
     const networkName = "Sepolia Sturan Network";
@@ -87,6 +90,23 @@ export const getWeb3 = () => {
         throw new Error("Web3 is not connected. Please connect MetaMask first.");
     }
     return web3;
+};
+
+export const isOwner = async(account) => {
+    try {
+        const web3Instance = createContractInstance();
+        const contract = new web3.eth.Contract(contractAbi.abi, contractAddress);
+        const owner = await contract.methods.owner().call();
+        return owner.toLowerCase() === account.toLowerCase();
+        console.log(owner);
+    } catch (error) {
+        console.error("Error checking status", error);
+        throw error
+    }
+}
+
+export const disconnectWeb3 = () => {
+    web3 = null;
 };
 
 export { web3 };

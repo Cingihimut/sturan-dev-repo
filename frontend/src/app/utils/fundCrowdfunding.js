@@ -33,7 +33,7 @@ export const fundCrowdfunding = async (amount) => {
 
     const amountInWei = Web3.utils.toWei(amount.toString(), "ether")
 
-    const receipt = await contract.methods.fund(amountInWei).send({ from: sender });
+    const receipt = await contract.methods.contribute(amountInWei).send({ from: sender });
     console.log("Transaction receipt:", receipt);
     return receipt.transactionHash;
   } catch (error) {

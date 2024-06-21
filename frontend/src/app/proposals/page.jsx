@@ -29,7 +29,7 @@ const Participate = () => {
             key={index}
             className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300"
           >
-            <Link href={`/proposals/details/${campaign.id}`}>
+            <Link href={`/proposals/${campaign.id}`}>
               <div className="flex flex-col h-full">
                 <div className="flex justify-center">
                   <Image

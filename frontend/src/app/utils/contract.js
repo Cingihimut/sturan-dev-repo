@@ -84,22 +84,23 @@ export const createCampaign = async (name, goal, maxContribution, maxContributor
 
 export const getCampaignDetails = async (campaignId) => {
     try {
-        const contract = await createContractInstance();
-        const campaign = await contract.methods.getCampaignDetails(campaignId).call();
-
-        return{
-            id: campaignId,
-            name: campaign[0],
-            goal: campaign[1],
-            maxContribution: campaign[2],
-            maxContributor: campaign[3],
-            duration: campaign[4],
-            startTime: campaign[5],
-            endTime: campaign[6],
-            isOpen: campaign[7]
-        }
+      const contract = await createContractInstance();
+      const campaign = await contract.methods.getCampaignDetails(campaignId).call();
+  
+      return {
+        id: campaignId,
+        name: campaign[0],
+        goal: campaign[1],
+        maxContribution: campaign[2],
+        maxContributor: campaign[3],
+        duration: campaign[4],
+        startTime: campaign[5],
+        endTime: campaign[6],
+        isOpen: campaign[7]
+      }
     } catch (error) {
-        console.error("Error fetching campaign details", error);
-        throw error;
+      console.error("Error fetching campaign details", error);
+      throw error;
     }
-}
+  }
+  
