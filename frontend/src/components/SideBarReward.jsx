@@ -2,13 +2,15 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { connectWeb3 } from "../app/utils/web3";
+import { fetchingTransaction } from "../app/utils/fetchingDataTransaction";
 import CardSubmit from "./CardSubmit";
-import GetContributor from "@/app/dataContributor/GetContributor";
+import TransactionHashList from "@/app/dataContributor/TransactionHashList";
 
 const SideBarReward = () => {
   const [account, setAccount] = useState(null);
   const [showCardSubmit, setShowCardSubmit] = useState(false);
-  const [campaignId, setCampaignId] = useState(null);  // Tambahkan state untuk campaignId
+  const [campaignId, setCampaignId] = useState(null);
+  const [transactionHashes, setTransactionHashes] = useState([]);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -17,6 +19,7 @@ const SideBarReward = () => {
         const accounts = await web3Instance.eth.getAccounts();
         if (accounts.length > 0) {
           setAccount(accounts[0]);
+          console.log("Connected account:", accounts[0]);
         }
       } catch (error) {
         console.error("Error checking connection", error);
@@ -31,6 +34,7 @@ const SideBarReward = () => {
       const web3Instance = await connectWeb3();
       const accounts = await web3Instance.eth.getAccounts();
       setAccount(accounts[0]);
+      console.log("Connected account:", accounts[0]);
     } catch (error) {
       console.error("Connection Failed", error);
     }
@@ -43,6 +47,15 @@ const SideBarReward = () => {
     if (account) {
       setCampaignId(1);
       setShowCardSubmit(true);
+
+      // Fetch transaction hashes
+      try {
+        const data = await fetchingTransaction(1);
+        console.log("Fetched transaction hashes:", data.transactionHashes); // Log hash transaksi
+        setTransactionHashes(data.transactionHashes);
+      } catch (error) {
+        console.error("Error fetching transaction hashes", error);
+      }
     }
   };
 
@@ -71,7 +84,11 @@ const SideBarReward = () => {
       </div>
       <h1 className="mt-6 text-xl lg:text-2xl font-semibold">Participates:</h1>
       <div className="pt-3 overflow-hidden">
-        <GetContributor />
+        {transactionHashes.length > 0 ? (
+          <TransactionHashList transactionHashes={transactionHashes} />
+        ) : (
+          <p>No transaction hashes available.</p>
+        )}
       </div>
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />}
     </div>
