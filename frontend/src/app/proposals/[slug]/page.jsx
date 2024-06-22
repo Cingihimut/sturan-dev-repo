@@ -65,7 +65,7 @@ const CampaignDetail = ({ params }) => {
           <h1 className="mt-7 text-xl lg:text-2xl font-semibold">Explore</h1>
         </div>
         <div className="border-t-2 lg:border-t-0 lg:border-l-2 border-color-neutral col-span-1 lg:col-span-2 pt-4 lg:pt-0">
-          <SideBarReward />
+          <SideBarReward campaignId={slug}/>
         </div>
       </div>
     </div>
