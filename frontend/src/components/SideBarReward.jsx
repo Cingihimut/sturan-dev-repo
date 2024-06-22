@@ -65,7 +65,7 @@ const SideBarReward = ({ campaignId }) => {
         </div>
         <p className="mb-4">Completing all tasks makes you eligible for prizes of various tiers. If you are selected as a winner for a higher-tier prize, you will no longer be eligible to receive a prize of a lower tier.</p>
         <button onClick={handleTakePartClick} className="w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30">
-          Fund Now
+          Get Contribute 🔥
         </button>
       </div>
       <h1 className="mt-6 text-xl lg:text-2xl font-semibold">Participates:</h1>
