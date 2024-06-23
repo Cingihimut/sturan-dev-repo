@@ -2,12 +2,14 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { connectWeb3 } from "../app/utils/web3";
+import { getCampaignDetails } from "@/app/utils/contract";
 import CardSubmit from "./CardSubmit";
 import GetTransaction from "@/app/dataContributor/GetTransaction";
 
 const SideBarReward = ({ campaignId }) => {
   const [account, setAccount] = useState(null);
   const [showCardSubmit, setShowCardSubmit] = useState(false);
+  const [campaignDetails, setCampaignDetails] = useState(null);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -25,6 +27,21 @@ const SideBarReward = ({ campaignId }) => {
 
     checkConnection();
   }, []);
+
+  useEffect(() => {
+    const fetchCampaignDetails = async () => {
+      try {
+        const details = await getCampaignDetails(campaignId);
+        setCampaignDetails(details);
+      } catch (error) {
+        console.error("Error fetching campaign details", error);
+      }
+    };
+
+    if (campaignId) {
+      fetchCampaignDetails();
+    }
+  }, [campaignId]);
 
   const handleConnect = async () => {
     try {
@@ -49,6 +66,11 @@ const SideBarReward = ({ campaignId }) => {
     setShowCardSubmit(false);
   };
 
+  const formatBigInt = (bigInt) => {
+    const valueInEther = Number(bigInt) / 1e18;
+    return valueInEther.toLocaleString();
+  };
+
   return (
     <div className="flex flex-col p-4 lg:p-10">
       <div className="mb-4 flex justify-between">
@@ -58,12 +80,22 @@ const SideBarReward = ({ campaignId }) => {
       <div className="border-[2px] border-color-neutral rounded-lg p-4 lg:p-7">
         <div className="flex justify-between py-2 px-3 border-[2px] border-color-neutral rounded-xl mb-4">
           <h1>For: </h1>
-          <h1>1000 Participates</h1>
+          <h1>
+            {campaignDetails && (
+              <p>{campaignDetails.maxContributor.toString()} Contributors</p> // Display maxContributor
+            )}
+          </h1>
         </div>
         <div className="flex justify-center mb-4">
           <Image src="/assets/dummy-member.jpeg" width="250" height="250" alt="..." className="w-full h-auto max-w-xs lg:max-w-none" />
         </div>
-        <p className="mb-4">Completing all tasks makes you eligible for prizes of various tiers. If you are selected as a winner for a higher-tier prize, you will no longer be eligible to receive a prize of a lower tier.</p>
+        <p className="mb-4">Rules:</p>
+        {campaignDetails && (
+          <div className="mb-4">
+            <p>Max Contribution: {formatBigInt(campaignDetails.maxContribution)} XTR</p>
+            <p>Goals: {formatBigInt(campaignDetails.goal)} XTR</p>
+          </div>
+        )}
         <button onClick={handleTakePartClick} className="w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30">
           Get Contribute 🔥
         </button>

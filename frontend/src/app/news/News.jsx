@@ -1,59 +1,59 @@
-import Image from "next/image";
-import Link from "next/link";
+"use client"
+import { useEffect } from "react";
+import { CountUp } from "countup.js";
 
 const News = () => {
+  useEffect(() => {
+    const options = {
+      duration: 2,
+      suffix: '%', // Untuk Audit Score
+    };
+
+    const auditScore = new CountUp('auditScore', 80, options);
+    if (!auditScore.error) {
+      auditScore.start();
+    } else {
+      console.error(auditScore.error);
+    }
+
+    const activeCampaignOptions = {
+      duration: 2,
+      suffix: '+', // Untuk Active Campaign
+    };
+
+    const activeCampaign = new CountUp('activeCampaign', 100, activeCampaignOptions);
+    if (!activeCampaign.error) {
+      activeCampaign.start();
+    } else {
+      console.error(activeCampaign.error);
+    }
+
+    const userContributedOptions = {
+      duration: 2,
+      suffix: '+', // Untuk User Contributed
+    };
+
+    const userContributed = new CountUp('userContributed', 5000, userContributedOptions);
+    if (!userContributed.error) {
+      userContributed.start();
+    } else {
+      console.error(userContributed.error);
+    }
+  }, []);
+
   return (
-    <div className="p-4 sm:p-6 md:p-9">
-      <h1 className="font-semibold text-2xl mb-7">Hot News</h1>
-      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <div className="max-w-sm p-6 bg-white border border-gray-200 hover:shadow-lg rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <Link href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lorem ipsum</h5>
-          </Link>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi reprehenderit ipsa quod nisi ut asperiores</p>
-          <Link href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-            </svg>
-          </Link>
-        </div>
-        <div className="max-w-sm p-6 bg-white border border-gray-200 hover:shadow-lg rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <Link href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lorem ipsum</h5>
-          </Link>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi reprehenderit ipsa quod nisi ut asperiores</p>
-          <Link href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-            </svg>
-          </Link>
-        </div>
-        <div className="max-w-sm p-6 bg-white border border-gray-200 hover:shadow-lg rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <Link href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lorem ipsum</h5>
-          </Link>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi reprehenderit ipsa quod nisi ut asperiores</p>
-          <Link href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-            </svg>
-          </Link>
-        </div>
-        <div className="max-w-sm p-6 bg-white border border-gray-200 hover:shadow-lg rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-          <Link href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lorem ipsum</h5>
-          </Link>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi reprehenderit ipsa quod nisi ut asperiores</p>
-          <Link href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Read more
-            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
-            </svg>
-          </Link>
-        </div>
+    <div className="flex flex-col items-center md:flex-row md:justify-center gap-8 md:gap-20 bg-color-navbar p-6 md:p-16">
+      <div className="p-3 text-center md:text-left">
+        <h1 id="auditScore" className="text-4xl md:text-5xl font-bold">0%</h1>
+        <h1 className="text-lg md:text-2xl">Audit Score</h1>
+      </div>
+      <div className="p-3 text-center md:text-left md:border-l-2  border-gray-400">
+        <h1 id="activeCampaign" className="text-4xl md:text-5xl font-bold">0+</h1>
+        <h1 className="text-lg md:text-2xl">Active Campaign</h1>
+      </div>
+      <div className="p-3 text-center md:text-left md:border-l-2 border-gray-400">
+        <h1 id="userContributed" className="text-4xl md:text-5xl font-bold">0+</h1>
+        <h1 className="text-lg md:text-2xl">User Contributed</h1>
       </div>
     </div>
   );

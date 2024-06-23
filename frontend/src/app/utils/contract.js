@@ -81,23 +81,24 @@ export const createCampaign = async (name, goal, maxContribution, maxContributor
 export const getCampaignDetails = async (campaignId) => {
     try {
         const contract = await createContractInstance();
-        const campaign = await contract.methods.getCampaignDetails(campaignId).call();
+        const campaign = await contract.methods.campaigns(campaignId).call();
     
         return {
             id: campaignId,
-            name: campaign[0],
-            goal: campaign[1],
-            maxContribution: campaign[2],
-            maxContributor: campaign[3],
-            duration: campaign[4],
-            startTime: campaign[5],
-            endTime: campaign[6],
-            isOpen: campaign[7],
-            contributors: campaign[8],
-            contributions: campaign[9]
+            name: campaign.name,
+            goal: BigInt(campaign.goal),
+            maxContribution: BigInt(campaign.maxContribution),
+            maxContributor: Number(campaign.maxContributor), // This should be a number
+            duration: campaign.duration,
+            startTime: campaign.startTime,
+            endTime: campaign.endTime,
+            isOpen: campaign.isOpen,
+            contributors: campaign.contributors,
+            contributions: campaign.contributions
         };
     } catch (error) {
         console.error("Error fetching campaign details", error);
         throw error;
     }
 };
+
