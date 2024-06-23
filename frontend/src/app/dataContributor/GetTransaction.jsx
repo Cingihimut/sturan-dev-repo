@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchingTransaction } from '../utils/fetchingDataTransaction';
 import Link from 'next/link';
 
-const GetTransaction = ({ campaignId }) => {
+const GetTransaction = ({ campaignId, setContributors }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,6 +12,7 @@ const GetTransaction = ({ campaignId }) => {
       try {
         const data = await fetchingTransaction(campaignId);
         setTransactions(data);
+        setContributors(data);  // Pass the list of transactions (contributors) to the parent component
       } catch (error) {
         console.error("Error fetching transactions", error);
       } finally {
@@ -22,7 +23,7 @@ const GetTransaction = ({ campaignId }) => {
     if (campaignId) {
       fetchTransactions();
     }
-  }, [campaignId]);
+  }, [campaignId, setContributors]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -36,8 +37,8 @@ const GetTransaction = ({ campaignId }) => {
         <ul>
           {transactions.map((tx, index) => (
             <li key={index} className="mb-2">
-              <Link target='blank' href={`https://sepolia.etherscan.io/address/${tx}`} className='hover:text-color-typography hover:duration-200'>Contributor: {tx}</Link>
-              {/* Additional data can be displayed here */}
+              <p>Contributor: </p>
+              <Link target='_blank' href={`https://sepolia.etherscan.io/address/${tx}`} className='hover:text-color-typography hover:duration-200'>{tx}</Link>
               <hr />
             </li>
           ))}

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { connectWeb3 } from "../app/utils/web3";
 import { getCampaignDetails } from "@/app/utils/contract";
 import CardSubmit from "./CardSubmit";
@@ -10,6 +10,7 @@ const SideBarReward = ({ campaignId }) => {
   const [account, setAccount] = useState(null);
   const [showCardSubmit, setShowCardSubmit] = useState(false);
   const [campaignDetails, setCampaignDetails] = useState(null);
+  const [contributors, setContributors] = useState([]);
 
   useEffect(() => {
     const checkConnection = async () => {
@@ -71,6 +72,10 @@ const SideBarReward = ({ campaignId }) => {
     return valueInEther.toLocaleString();
   };
 
+  const hasContributed = useCallback(() => {
+    return contributors.includes(account);
+  }, [account, contributors]);
+
   return (
     <div className="flex flex-col p-4 lg:p-10">
       <div className="mb-4 flex justify-between">
@@ -82,7 +87,7 @@ const SideBarReward = ({ campaignId }) => {
           <h1>For: </h1>
           <h1>
             {campaignDetails && (
-              <p>{campaignDetails.maxContributor.toString()} Contributors</p> // Display maxContributor
+              <p>{campaignDetails.maxContributor.toString()} Contributors</p>
             )}
           </h1>
         </div>
@@ -97,12 +102,12 @@ const SideBarReward = ({ campaignId }) => {
           </div>
         )}
         <button onClick={handleTakePartClick} className="w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30">
-          Get Contribute 🔥
+          {hasContributed() ? "Mint Reward" : "Get Contribute 🔥"}
         </button>
       </div>
       <h1 className="mt-6 text-xl lg:text-2xl font-semibold">Participates:</h1>
       <div>
-        {campaignId && <GetTransaction campaignId={campaignId} />}
+        {campaignId && <GetTransaction campaignId={campaignId} setContributors={setContributors} />}
       </div>
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />}
     </div>

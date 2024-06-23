@@ -19,6 +19,9 @@ const Footer = () => {
                                 <li className="mb-4">
                                     <Link href="https://sturanet.xyz/" className="hover:underline">Sturan Network</Link>
                                 </li>
+                                <li className="mb-4">
+                                    <Link target="blank" href="https://sepolia.etherscan.io/token/0x086d459a513f10abec41b5839af688f68efe0abb" className="hover:underline">Sepolia EtherScan</Link>
+                                </li>
                             </ul>
                         </div>
                         <div>

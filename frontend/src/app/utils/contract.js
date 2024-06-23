@@ -102,3 +102,13 @@ export const getCampaignDetails = async (campaignId) => {
     }
 };
 
+export const getContributorStatus = async (account) => {
+    try {
+        const contract = await createContractInstance();
+        const [isContributor, campaignId] = await contract.methods.getContributorStatus(account).call();
+        return { isContributor, campaignId };
+    } catch (error) {
+        console.error("Error checking contributor status", error);
+        throw error;
+    }
+};

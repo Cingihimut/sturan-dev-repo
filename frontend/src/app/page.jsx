@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Participate from "./proposals/page";
-import News from "./news/News";
-import Partnership from "./partnership/partnership";
+import News from "../components/news/News";
+import Partnership from "../components/partnership/Partnership";
+import SuccessCampaign from "@/components/about/SuccessCampaign";
 
 const Page = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -53,7 +54,8 @@ const Page = () => {
       </div>
       <Participate />
       <News />
-      <Partnership />
+      <Partnership/>
+      <SuccessCampaign />
     </>
   );
 };

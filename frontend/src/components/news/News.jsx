@@ -42,7 +42,7 @@ const News = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center md:flex-row md:justify-center gap-8 md:gap-20 bg-color-navbar p-6 md:p-16">
+    <div className="flex flex-col items-center md:flex-row md:justify-center gap-8 md:gap-20 border-[2px] border-color-neutral rounded-xl p-6 md:p-16">
       <div className="p-3 text-center md:text-left">
         <h1 id="auditScore" className="text-4xl md:text-5xl font-bold">0%</h1>
         <h1 className="text-lg md:text-2xl">Audit Score</h1>
