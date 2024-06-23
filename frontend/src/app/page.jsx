@@ -10,11 +10,9 @@ const Page = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const images = [
-    "/assets/dummy-foto.png",
-    "/assets/dummy-foto.png",
-    "/assets/dummy-foto.png",
-    "/assets/dummy-foto.png",
-    "/assets/dummy-foto.png",
+    "/assets/campaign-palestine.png",
+    "/assets/donation.png",
+    "/assets/huricane.png",
   ];
 
   const handlePrev = () => {
@@ -31,7 +29,7 @@ const Page = () => {
         <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
           {images.map((src, index) => (
             <div key={index} className={`duration-700 ease-in-out ${index === activeIndex ? "block" : "hidden"}`} data-carousel-item={index === activeIndex ? "active" : ""}>
-              <Image width="350" height="350" src={src} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt={`Slide ${index + 1}`} />
+              <Image width="2500" height="2500" src={src} className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt={`Slide ${index + 1}`} />
             </div>
           ))}
         </div>

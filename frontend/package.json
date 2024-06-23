@@ -24,6 +24,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-social-icons": "^6.16.0",
+    "typeit-react": "^2.7.1",
     "viem": "^2.13.1",
     "wagmi": "^2.9.8",
     "web3": "^4.9.0"
