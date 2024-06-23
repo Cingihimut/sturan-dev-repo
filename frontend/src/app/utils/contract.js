@@ -18,7 +18,7 @@ export const getConnectedAccount = async () => {
     }
 };
 
-export const getTokenBalance = async (account, contractAbi, contractAddress) => {
+export const getTokenBalance = async(account, contractAbi, contractAddress) => {
     try {
         const web3Instance = await connectWeb3();
         const contract = new web3Instance.eth.Contract(contractAbi, contractAddress);
@@ -30,7 +30,7 @@ export const getTokenBalance = async (account, contractAbi, contractAddress) => 
     }
 };
 
-export const createContractInstance = async () => {
+export const createContractInstance = async() => {
     const web3 = await connectWeb3();
     return new web3.eth.Contract(crowdfundingABI.abi, contractAddress);
 };

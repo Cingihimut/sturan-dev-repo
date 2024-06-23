@@ -4,7 +4,21 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "./ICrowdfunding.sol";
+
+interface ICrowdfunding {
+    function getCampaignDetails(uint256 campaignId) external view returns (
+        string memory name,
+        uint256 goal,
+        uint256 maxContribution,
+        uint256 maxContributor,
+        uint256 duration,
+        uint256 startTime,
+        uint256 endTime,
+        bool isOpen,
+        address[] memory contributors,
+        uint256[] memory contributions
+    );
+}
 
 contract Crowdfunding is Ownable {
     using SafeERC20 for IERC20;

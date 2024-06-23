@@ -21,7 +21,7 @@ contract NftSturanNetwork is ERC1155, Ownable {
     }
 
     function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, string[] memory uris, bytes memory data) public onlyOwner {
-        require(ids.length == uris.length, "NftSturanNetwork: IDs and URIs length mismatch");
+        require(ids.length == uris.length && ids.length == amounts.length, "NftSturanNetwork: IDs, amounts, and URIs length mismatch");
         _mintBatch(to, ids, amounts, data);
         for (uint256 i = 0; i < ids.length; i++) {
             _setTokenURI(ids[i], uris[i]);
