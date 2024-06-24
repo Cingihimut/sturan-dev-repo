@@ -12,22 +12,32 @@ contract NftSturanNetwork is ERC1155, Ownable {
 
     mapping(uint256 => string) private tokenURIs;
 
-    constructor(address _crowdfundingAddress, address initialOwner) Ownable(initialOwner) ERC1155("") {
+    constructor(
+        address _crowdfundingAddress,
+        address initialOwner
+    ) payable Ownable(initialOwner) ERC1155("") {
         crowdfunding = ICrowdfunding(_crowdfundingAddress);
     }
 
     function claimNft(uint256 campaignId, uint256 amount) external {
-        require(!hasClaimed[campaignId][msg.sender], "NFT already claimed for this campaign");
+        bool hasClaimedMemory = hasClaimed[campaignId][msg.sender];
+
+        require(!hasClaimed[campaignId][msg.sender], "Already claimed");
 
         (bool hasContributed, ) = crowdfunding.getContributorStatus(msg.sender);
         require(hasContributed, "Address has not contributed");
-
-        hasClaimed[campaignId][msg.sender] = true;
+        hasClaimedMemory = true;
+        hasClaimed[campaignId][msg.sender] = hasClaimedMemory;
 
         _mint(msg.sender, campaignId, amount, "");
     }
 
-    function mintToOwner(uint256 campaignId, uint256 amount, bytes memory data, string memory _uri) external onlyOwner {
+    function mintToOwner(
+        uint256 campaignId,
+        uint256 amount,
+        bytes memory data,
+        string memory _uri
+    ) external onlyOwner payable {
         _mint(msg.sender, campaignId, amount, data);
         _setTokenURI(campaignId, _uri);
     }
@@ -42,7 +52,7 @@ contract NftSturanNetwork is ERC1155, Ownable {
         return bytes(tokenUri).length > 0 ? tokenUri : super.uri(tokenId);
     }
 
-    function setUri(string memory newuri) external onlyOwner {
+    function setUri(string memory newuri) external onlyOwner payable {
         _setURI(newuri);
     }
 }
