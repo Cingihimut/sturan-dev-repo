@@ -2,7 +2,7 @@ import Web3 from "web3";
 import { connectWeb3 } from "./web3";
 import claimTokenABI from "../../contracts/ClaimToken.json";
 const claimXTR = claimTokenABI.abi;
-const claimTokenAddress = "0x3117Ff19D2C2Abf7Ca88C2945Bde77431725E548";
+const claimTokenAddress = "0x6a2111c4f45973e236F5113d126b1cEb2baBcC09";
 
 export const claimToken = async() => {
     try {

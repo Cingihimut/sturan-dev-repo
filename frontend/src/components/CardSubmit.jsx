@@ -7,7 +7,7 @@ import contractJson from "../contracts/Xtr.json";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
-const XTRAddress = "0x086D459A513f10abec41B5839aF688f68EFE0abb";
+const XTRAddress = "0x09b138a87cdb0F638de7cED334bcBECA93C87e45";
 
 const CardSubmit = ({ onClose, campaignId }) => {
     const [inputValue, setInputValue] = useState('');
@@ -66,7 +66,7 @@ const CardSubmit = ({ onClose, campaignId }) => {
         }
 
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x3851db51a7566A574800B38700d7600C27EfEF97";
+        const crowdfundingAddress = "0x6fe9Eac96fdFCE9Bb73A2fB4D9b8744ce7018EAE";
 
         try {
             await approveToken(crowdfundingAddress, contributionAmount);

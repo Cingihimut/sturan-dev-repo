@@ -1,7 +1,7 @@
 import { connectWeb3 } from "./web3";
 import nftAbi from "../../contracts/NftSturanNetwork.json";
 
-const nftAddress = "0xB0FC62103B08852570387cD53256D1C5EBAC1513";
+const nftAddress = "0x2A5D0503d9f94002C49025e93DD147aAde4657ac";
 
 export const createNftInstance = async () => {
   const web3 = await connectWeb3();
@@ -14,8 +14,13 @@ export const mintNftCampaign = async ({ campaignId, amount, data, uri }) => {
     const accounts = await web3.eth.getAccounts();
     const ownerAddress = accounts[0];
     const nftInstance = await createNftInstance();
+    const formattedData = web3.utils.asciiToHex(data);
 
-    const transaction = await nftInstance.methods.mintToOwner(campaignId, amount, data, uri).send({ from: ownerAddress });
+    const transaction = await nftInstance.methods.mintToOwner(campaignId, amount, formattedData, uri).send({
+      from: ownerAddress,
+      gas: 1000000,
+      gasPrice: web3.utils.toWei('31.554641306', 'gwei')
+    });
 
     console.log("NFT minted successfully", transaction);
     return transaction;

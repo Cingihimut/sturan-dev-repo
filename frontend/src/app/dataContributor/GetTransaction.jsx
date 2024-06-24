@@ -12,7 +12,7 @@ const GetTransaction = ({ campaignId, setContributors }) => {
       try {
         const data = await fetchingTransaction(campaignId);
         setTransactions(data);
-        setContributors(data);  // Pass the list of transactions (contributors) to the parent component
+        setContributors(data);
       } catch (error) {
         console.error("Error fetching transactions", error);
       } finally {

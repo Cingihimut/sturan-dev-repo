@@ -2,7 +2,7 @@ import Web3 from "web3";
 import contractAbi from "../../contracts/Crowdfunding.json";
 import { connectWeb3 } from "./web3";
 
-const crowdfundingAddress = "0x3851db51a7566A574800B38700d7600C27EfEF97";
+const crowdfundingAddress = "0x6fe9Eac96fdFCE9Bb73A2fB4D9b8744ce7018EAE";
 const crowdfundingAbi = contractAbi.abi;
 
 export const fetchingTransaction = async (campaignId) => {

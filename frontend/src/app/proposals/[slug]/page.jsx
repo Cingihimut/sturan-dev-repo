@@ -8,8 +8,8 @@ import SideBarReward from "@/components/SideBarReward";
 const CampaignDetail = ({ params }) => {
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { slug } = params; // mendapatkan slug dari params
-
+  const { slug } = params;
+  
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       try {

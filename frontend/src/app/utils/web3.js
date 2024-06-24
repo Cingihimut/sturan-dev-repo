@@ -3,7 +3,7 @@ import contractAbi from "../../contracts/Crowdfunding.json"
 import { createContractInstance } from "./contract";
 
 let web3;
-const contractAddress = "0x3851db51a7566A574800B38700d7600C27EfEF97";
+const contractAddress = "0x6fe9Eac96fdFCE9Bb73A2fB4D9b8744ce7018EAE";
 
 const setInfuraSepoliaNetwork = async () => {
     const networkName = "Sepolia Sturan Network";

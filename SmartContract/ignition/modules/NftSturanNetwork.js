@@ -1,8 +1,8 @@
 const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
 module.exports = buildModule("NftSturanNetworkModule", (m) => {
-  const initialOwner = "0xe1654213b35D4Da60A37d52f9236848693a4911a";
-  const campaignAddress = "0x3851db51a7566A574800B38700d7600C27EfEF97";
+  const initialOwner = "0x0caDDE63e1A3F92d6E754eFb74288810DABFC150";
+  const campaignAddress = "0x6fe9Eac96fdFCE9Bb73A2fB4D9b8744ce7018EAE";
   const nftSturanNetwork = m.contract("NftSturanNetwork", [initialOwner, campaignAddress]);
   return { nftSturanNetwork };
 });
