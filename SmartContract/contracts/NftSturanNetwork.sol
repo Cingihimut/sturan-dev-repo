@@ -22,7 +22,7 @@ contract NftSturanNetwork is ERC1155, Ownable {
     function claimNft(uint256 campaignId, uint256 amount) external {
         bool hasClaimedMemory = hasClaimed[campaignId][msg.sender];
 
-        require(!hasClaimed[campaignId][msg.sender], "Already claimed");
+        require(!hasClaimedMemory, "Already claimed");
 
         (bool hasContributed, ) = crowdfunding.getContributorStatus(msg.sender);
         require(hasContributed, "Address has not contributed");
@@ -37,7 +37,7 @@ contract NftSturanNetwork is ERC1155, Ownable {
         uint256 amount,
         bytes memory data,
         string memory _uri
-    ) external onlyOwner payable {
+    ) external payable onlyOwner {
         _mint(msg.sender, campaignId, amount, data);
         _setTokenURI(campaignId, _uri);
     }
@@ -52,7 +52,7 @@ contract NftSturanNetwork is ERC1155, Ownable {
         return bytes(tokenUri).length > 0 ? tokenUri : super.uri(tokenId);
     }
 
-    function setUri(string memory newuri) external onlyOwner payable {
+    function setUri(string memory newuri) external payable onlyOwner {
         _setURI(newuri);
     }
 }
