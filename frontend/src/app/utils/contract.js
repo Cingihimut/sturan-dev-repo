@@ -2,7 +2,7 @@ import { connectWeb3 } from "@/app/utils/web3";
 import Web3 from "web3";
 import crowdfundingABI from "../../contracts/Crowdfunding.json";
 
-const contractAddress = "0x492b1E061bBaD5236fDA26d6f7075Bf83A180e51";
+const contractAddress = "0x3851db51a7566A574800B38700d7600C27EfEF97";
 
 export const getConnectedAccount = async () => {
     try {
@@ -44,7 +44,7 @@ export const getCampaigns = async () => {
         for (let i = 0; i < campaignCount; i++) {
             const campaign = await contract.methods.campaigns(i).call();
             campaigns.push({
-                id: i, // Adjusted to match the index
+                id: i,
                 name: campaign.name,
                 goal: campaign.goal,
                 maxContribution: campaign.maxContribution,

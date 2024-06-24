@@ -66,7 +66,7 @@ const CardSubmit = ({ onClose, campaignId }) => {
         }
 
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x5535658acAA103e8a64E68Ec524dB48Ef89d0B25";
+        const crowdfundingAddress = "0x3851db51a7566A574800B38700d7600C27EfEF97";
 
         try {
             await approveToken(crowdfundingAddress, contributionAmount);
@@ -92,8 +92,8 @@ const CardSubmit = ({ onClose, campaignId }) => {
             )}
             {showCardSubmit && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-                    <div className="relative max-w-sm rounded overflow-hidden shadow-lg bg-white backdrop-filter-none">
-                        <button onClick={onClose} className="absolute top-0 right-0 mt-2 mr-2 bg-red-500 text-white rounded-full px-2 py-1">
+                    <div className="relative max-w-sm rounded-xl border-[2px] border-color-neutral overflow-hidden shadow-lg bg-white backdrop-filter-none">
+                        <button onClick={onClose} className="absolute top-0 right-0 mt-2 mr-2 text-color-red rounded-full px-2 py-1">
                             <X size={32} />
                         </button>
                         <div className="px-6 py-4">

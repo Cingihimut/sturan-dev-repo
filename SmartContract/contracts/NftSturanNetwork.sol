@@ -6,68 +6,43 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ICrowdfunding.sol";
 
 contract NftSturanNetwork is ERC1155, Ownable {
-    ICrowdfunding public crowdfundingContract;
-    mapping(uint256 => string) private _tokenURIs;
-    mapping(uint256 => bool) public campaignNftMinted;
+    ICrowdfunding private crowdfunding;
+
     mapping(uint256 => mapping(address => bool)) public hasClaimed;
 
-    constructor(address initialOwner, address _crowdfundingContract) Ownable(initialOwner) ERC1155("") {
-        crowdfundingContract = ICrowdfunding(_crowdfundingContract);
+    mapping(uint256 => string) private tokenURIs;
+
+    constructor(address _crowdfundingAddress, address initialOwner) Ownable(initialOwner) ERC1155("") {
+        crowdfunding = ICrowdfunding(_crowdfundingAddress);
     }
 
-    function mint(address account, uint256 id, uint256 amount, string memory _uri, bytes memory data) public onlyOwner {
-        _mint(account, id, amount, data);
-        _setTokenURI(id, _uri);
+    function claimNft(uint256 campaignId, uint256 amount) external {
+        require(!hasClaimed[campaignId][msg.sender], "NFT already claimed for this campaign");
+
+        (bool hasContributed, ) = crowdfunding.getContributorStatus(msg.sender);
+        require(hasContributed, "Address has not contributed");
+
+        hasClaimed[campaignId][msg.sender] = true;
+
+        _mint(msg.sender, campaignId, amount, "");
     }
 
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, string[] memory uris, bytes memory data) public onlyOwner {
-        require(ids.length == uris.length && ids.length == amounts.length, "NftSturanNetwork: IDs, amounts, and URIs length mismatch");
-        _mintBatch(to, ids, amounts, data);
-        for (uint256 i = 0; i < ids.length; i++) {
-            _setTokenURI(ids[i], uris[i]);
-        }
+    function mintToOwner(uint256 campaignId, uint256 amount, bytes memory data, string memory _uri) external onlyOwner {
+        _mint(msg.sender, campaignId, amount, data);
+        _setTokenURI(campaignId, _uri);
+    }
+
+    function _setTokenURI(uint256 tokenId, string memory _uri) internal {
+        tokenURIs[tokenId] = _uri;
+        emit URI(_uri, tokenId);
     }
 
     function uri(uint256 tokenId) public view override returns (string memory) {
-        return _tokenURIs[tokenId];
+        string memory tokenUri = tokenURIs[tokenId];
+        return bytes(tokenUri).length > 0 ? tokenUri : super.uri(tokenId);
     }
 
-    function _setTokenURI(uint256 tokenId, string memory tokenURI) internal virtual {
-        _tokenURIs[tokenId] = tokenURI;
-    }
-
-    function mintNftForCampaign(uint256 campaignId, string memory _uri, bytes memory data) public onlyOwner {
-        require(!campaignNftMinted[campaignId], "NftSturanNetwork: NFT already minted for this campaign");
-
-        (, , , , , , , bool isOpen, address[] memory contributors, ) = crowdfundingContract.getCampaignDetails(campaignId);
-        require(!isOpen, "NftSturanNetwork: Campaign is still open");
-
-        for (uint256 i = 0; i < contributors.length; i++) {
-            _mint(contributors[i], campaignId, 1, data);
-            hasClaimed[campaignId][contributors[i]] = true;
-        }
-
-        _setTokenURI(campaignId, _uri);
-        campaignNftMinted[campaignId] = true;
-    }
-
-    function claimNft(uint256 campaignId) public {
-        require(campaignNftMinted[campaignId], "NftSturanNetwork: NFT not minted for this campaign");
-        require(!hasClaimed[campaignId][msg.sender], "NftSturanNetwork: NFT already claimed");
-
-        (, , , , , , , bool isOpen, address[] memory contributors, ) = crowdfundingContract.getCampaignDetails(campaignId);
-        require(!isOpen, "NftSturanNetwork: Campaign is still open");
-
-        bool isContributor = false;
-        for (uint256 i = 0; i < contributors.length; i++) {
-            if (contributors[i] == msg.sender) {
-                isContributor = true;
-                break;
-            }
-        }
-        require(isContributor, "NftSturanNetwork: Not a contributor to this campaign");
-
-        _mint(msg.sender, campaignId, 1, "");
-        hasClaimed[campaignId][msg.sender] = true;
+    function setUri(string memory newuri) external onlyOwner {
+        _setURI(newuri);
     }
 }

@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import { createCampaign } from '@/app/utils/contract';
-import { mintNewNft } from '@/app/utils/nftService';
 import Web3 from 'web3';
+import CreateNft from './CreateNft';
 
 const OwnerDashboard = () => {
   const [form, setForm] = useState({
@@ -11,8 +11,7 @@ const OwnerDashboard = () => {
     maxContribution: '',
     maxContributor: '',
     endTime: '',
-    uri_nft: '',
-    amount: ''
+
   });
 
   const handleChange = (e) => {
@@ -33,17 +32,7 @@ const OwnerDashboard = () => {
       const maxContributionInWei = Web3.utils.toWei(form.maxContribution.toString(), 'ether');
       const maxContributor = parseInt(form.maxContributor, 10);
 
-      // Buat kampanye
       await createCampaign(form.name, goalInWei, maxContributionInWei, maxContributor.toString(), duration);
-
-      // Mint NFT baru
-      const amount = parseInt(form.amount, 10); // Konversi jumlah NFT ke integer
-      await mintNewNft({
-        account: '<alamat akun pemilik>', // Ganti dengan alamat akun pemilik
-        id: '<ID unik NFT>', // Ganti dengan ID unik NFT yang ingin Anda mint
-        _uri: form.uri_nft, // Gunakan URI NFT dari formulir
-        data: '' // Data tambahan, bisa kosong jika tidak diperlukan
-      });
 
       alert('Campaign created successfully and NFT minted!');
     } catch (error) {
@@ -71,27 +60,6 @@ const OwnerDashboard = () => {
       alert('Error creating campaign');
     }
   };
-
-  const handleMintNft = async (e) => {
-    e.preventDefault();
-    try {
-      const amount = parseInt(form.amount, 10); // Convert NFT amount to integer
-  
-      // Mint NFT
-      await mintNewNft({
-        account: '<owner account address>', // Replace with the owner's account address
-        amount,
-        _uri: form.uri_nft,
-        data: '' // Additional data, if needed
-      });
-  
-      alert('NFT minted successfully!');
-    } catch (error) {
-      console.error("Error minting NFT", error);
-      alert('Error minting NFT');
-    }
-  };
-  
 
   return (
     <div className="p-4 sm:p-6 md:p-9">
@@ -155,29 +123,6 @@ const OwnerDashboard = () => {
             required
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">NFT URI</label>
-          <input
-            type="text"
-            name="uri_nft"
-            value={form.uri_nft}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">NFT Amount</label>
-          <input
-            type="number"
-            name="amount"
-            value={form.amount}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            required
-            min="0"
-          />
-        </div>
         <div className='flex justify-between'>
           <button
             type="button"
@@ -186,15 +131,9 @@ const OwnerDashboard = () => {
           >
             Create Campaign
           </button>
-          <button
-            type="button"
-            onClick={handleMintNft}
-            className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Mint NFT
-          </button>
         </div>
       </form>
+      <CreateNft />
     </div>
   );
 };
