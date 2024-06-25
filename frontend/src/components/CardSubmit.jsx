@@ -7,7 +7,7 @@ import contractJson from "../contracts/Xtr.json";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
-const XTRAddress = "0x09b138a87cdb0F638de7cED334bcBECA93C87e45";
+const XTRAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
 
 const CardSubmit = ({ onClose, campaignId }) => {
     const [inputValue, setInputValue] = useState('');

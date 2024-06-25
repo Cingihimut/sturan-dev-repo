@@ -4,7 +4,7 @@ import xtrContractJson from "../../contracts/Xtr.json";
 import { createContractInstance } from "./contract";
 
 const xtrAbi = xtrContractJson.abi;
-const xtrAddress = "0x09b138a87cdb0F638de7cED334bcBECA93C87e45";
+const xtrAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
 
 export const approveToken = async (crowdfundingAddress, amount) => {
     try {

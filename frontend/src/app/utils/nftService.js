@@ -10,71 +10,42 @@ export const createNftInstance = async () => {
 
 export const mintNftCampaign = async ({ campaignId, amount, data, uri }) => {
   try {
+    const contract = await createNftInstance();
     const web3 = await connectWeb3();
     const accounts = await web3.eth.getAccounts();
-    const ownerAddress = accounts[0];
-    const nftInstance = await createNftInstance();
-    const formattedData = web3.utils.asciiToHex(data);
+    const sender = accounts[0];
 
-    const transaction = await nftInstance.methods.mintToOwner(campaignId, amount, formattedData, uri).send({
-      from: ownerAddress,
-      gas: 1000000,
-      gasPrice: web3.utils.toWei('31.554641306', 'gwei')
-    });
+    const campaignIdBN = web3.utils.toNumber(campaignId);
+    const amountBN = web3.utils.toNumber(amount);
+    
+    const validData = data === '0x' ? data : web3.utils.asciiToHex(data);
 
-    console.log("NFT minted successfully", transaction);
-    return transaction;
+    const receipt = await contract.methods.mintToOwner(campaignIdBN, amountBN, validData, uri).send({ from: sender });
+    console.log("Transaction receipt", receipt);
+    return receipt;
   } catch (error) {
-    console.error("Error minting NFT", error);
+    console.error("Error mint nft to campaign", error);
     throw error;
   }
 };
 
 export const claimNft = async (campaignId, amount) => {
-  try {
-    const web3 = await connectWeb3();
-    const accounts = await web3.eth.getAccounts();
-    const userAddress = accounts[0];
-    const nftInstance = await createNftInstance();
+  const nft = await createNftInstance();
+  const accounts = await connectWeb3();
+  const from = accounts[0];
 
-    const transaction = await nftInstance.methods
-      .claimNft(campaignId, amount)
-      .send({ from: userAddress });
-
-    console.log("NFT claimed successfully", transaction);
-    return transaction;
-  } catch (error) {
-    console.error("Error claiming NFT", error);
-    throw error;
-  }
+  await nft.methods.claimNft(campaignId, amount).send({ from });
 };
 
 export const setUri = async (newUri) => {
-  try {
-    const web3 = await connectWeb3();
-    const accounts = await web3.eth.getAccounts();
-    const ownerAddress = accounts[0];
-    const nftInstance = await createNftInstance();
+  const nft = await createNftInstance();
+  const accounts = await connectWeb3();
+  const from = accounts[0];
 
-    const transaction = await nftInstance.methods
-      .setUri(newUri)
-      .send({ from: ownerAddress });
-
-    console.log("URI set successfully", transaction);
-    return transaction;
-  } catch (error) {
-    console.error("Error setting URI", error);
-    throw error;
-  }
+  await nft.methods.setUri(newUri).send({ from });
 };
 
 export const getTokenUri = async (tokenId) => {
-  try {
-    const nftInstance = await createNftInstance();
-    const uri = await nftInstance.methods.uri(tokenId).call();
-    return uri;
-  } catch (error) {
-    console.error("Error getting token URI", error);
-    throw error;
-  }
+  const nft = await createNftInstance();
+  return await nft.methods.uri(tokenId).call();
 };

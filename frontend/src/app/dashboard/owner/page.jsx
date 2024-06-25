@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { createCampaign } from '@/app/utils/contract';
 import Web3 from 'web3';
 import CreateNft from './CreateNft';
+import Upload from './Upload';
 
 const OwnerDashboard = () => {
   const [form, setForm] = useState({
@@ -133,7 +134,7 @@ const OwnerDashboard = () => {
           </button>
         </div>
       </form>
-      <CreateNft />
+      <Upload />
     </div>
   );
 };

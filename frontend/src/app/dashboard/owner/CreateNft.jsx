@@ -1,78 +1,100 @@
 "use client"
-import React, { useState } from 'react';
 import { mintNftCampaign } from '@/app/utils/nftService';
+import React, { useState } from 'react';
 
 const CreateNft = () => {
-    const [campaignId, setCampaignId] = useState('');
-    const [amount, setAmount] = useState('');
-    const [uri, setUri] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+  const [status, setStatus] = useState('');
 
-    const handleMint = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        setError('');
-        setSuccess('');
+  const [form, setForm] = useState({
+    campaignId: '',
+    amount: '',
+    uri: ''
+  });
 
-        try {
-            const result = await mintNftCampaign({
-                campaignId: parseInt(campaignId),
-                amount: parseInt(amount),
-                data: '0x',
-                uri
-            });
-            setSuccess(`NFT berhasil di-mint. Transaction hash: ${result.transactionHash}`);
-        } catch (err) {
-            setError(`Gagal minting NFT: ${err.message}`);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
 
-    return (
-        <div className="create-nft-container">
-            <h2>Mint NFT Kampanye</h2>
-            <form onSubmit={handleMint}>
-                <div>
-                    <label htmlFor="campaignId">ID Kampanye:</label>
-                    <input
-                        type="number"
-                        id="campaignId"
-                        value={campaignId}
-                        onChange={(e) => setCampaignId(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="amount">Jumlah:</label>
-                    <input
-                        type="number"
-                        id="amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="uri">URI Metadata:</label>
-                    <input
-                        type="text"
-                        id="uri"
-                        value={uri}
-                        onChange={(e) => setUri(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Minting...' : 'Mint NFT'}
-                </button>
-            </form>
-            {error && <p className="error">{error}</p>}
-            {success && <p className="success">{success}</p>}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('Minting...');
+    try {
+      const result = await mintNftCampaign({ 
+        campaignId: parseInt(form.campaignId, 10), 
+        amount: form.amount, 
+        data: "0x0", 
+        uri: form.uri 
+      });
+      console.log("Minting result:", result);
+      setStatus('NFT minted successfully!');
+      setForm({ campaignId: '', amount: '', uri: '' });
+    } catch (error) {
+      console.error("Error minting NFT:", error);
+      setStatus(`Error minting NFT: ${error.message}`);
+    }
+  };
+
+  const handleMintNft = async(e) => {
+    e.preventDefault();
+    setStatus('Minting...');
+    try {
+      const result = await mintNftCampaign({ 
+        campaignId: parseInt(form.campaignId, 10), 
+        amount: form.amount, 
+        data: "0x", 
+        uri: form.uri 
+      });
+      console.log("Minting result:", result);
+      setStatus('NFT minted successfully!');
+      setForm({ campaignId: '', amount: '', uri: '' }); // Reset form after successful minting
+    } catch (error) {
+      console.error("Error minting NFT:", error);
+      setStatus(`Error minting NFT: ${error.message}`);
+    }
+  }
+
+  return (
+    <div>
+      <h2>Create NFT Campaign</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <input 
+            type="number" 
+            name="campaignId"
+            placeholder="Campaign ID" 
+            value={form.campaignId} 
+            onChange={handleChange} 
+            required
+          />
         </div>
-    );
+        <div>
+          <input 
+            type="number" 
+            name="amount"
+            placeholder="Amount" 
+            value={form.amount} 
+            onChange={handleChange} 
+            required
+          />
+        </div>
+        <div>
+          <input 
+            type="text" 
+            name="uri"
+            placeholder="URI" 
+            value={form.uri} 
+            onChange={handleChange} 
+            required
+          />
+        </div>
+        <button onClick={handleMintNft} type="submit">Mint NFT Campaign</button>
+      </form>
+      {status && <p>{status}</p>}
+    </div>
+  );
 };
 
 export default CreateNft;
