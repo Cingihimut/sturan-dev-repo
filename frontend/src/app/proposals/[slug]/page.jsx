@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCampaignDetails } from "@/app/utils/contract";
+import { getCampaignDetails } from "../../utils/contract";
 import Image from "next/image";
 import SideBarReward from "@/components/SideBarReward";
 import Link from "next/link";
@@ -43,7 +43,7 @@ const CampaignDetail = ({ params }) => {
           <div className="flex items-center justify-between flex-wrap gap-4">
             <h1 className="text-xl lg:text-2xl font-semibold">{campaign.name}</h1>
             <button className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full">Share</button>
-            <Link href="/proposals/marketplace" target="blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full">Go To Marketplace</Link>
+            <Link target="blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full" href="https://testnets.opensea.io/collection/palestine-need-you-campaign/overview">Store</Link>
           </div>
           <div className="mt-6">
             <h1 className="text-2xl lg:text-3xl font-bold">{campaign.name}</h1>

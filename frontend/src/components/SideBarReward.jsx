@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { connectWeb3 } from "../app/utils/web3";
-import { getCampaignDetails } from "@/app/utils/contract";
+import { getCampaignDetails } from "../app/utils/contract";
 import CardSubmit from "./CardSubmit";
 import GetTransaction from "@/app/dataContributor/GetTransaction";
 
@@ -101,8 +101,12 @@ const SideBarReward = ({ campaignId }) => {
             <p>Goals: {formatBigInt(campaignDetails.goal)} XTR</p>
           </div>
         )}
-        <button onClick={handleTakePartClick} className="w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30">
-          {hasContributed() ? "Mint Reward" : "Get Contribute 🔥"}
+        <button 
+          onClick={handleTakePartClick} 
+          className={`w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30 ${hasContributed() ? 'cursor-not-allowed opacity-50' : ''}`} 
+          disabled={hasContributed()}
+        >
+          {hasContributed() ? "THX For Your Contribution" : "Get Contribute 🔥"}
         </button>
       </div>
       <h1 className="mt-6 text-xl lg:text-2xl font-semibold">Participates:</h1>

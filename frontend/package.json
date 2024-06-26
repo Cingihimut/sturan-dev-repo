@@ -15,6 +15,7 @@
     "@phosphor-icons/react": "^2.1.5",
     "@pinata/sdk": "^2.1.0",
     "@tanstack/react-query": "^5.40.0",
+    "@thirdweb-dev/react": "^4.9.4",
     "@walletconnect/modal": "^2.6.2",
     "@web3modal/wagmi": "^4.2.3",
     "countup.js": "^2.8.0",

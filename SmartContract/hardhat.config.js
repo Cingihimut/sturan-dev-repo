@@ -16,8 +16,6 @@ module.exports = {
     sepolia: {
       url: `https://sepolia.infura.io/v3/${infura_api_key}`,
       accounts: [private_key],
-      gas: 2100000,
-      gasPrice: 8000000000
     },
     gannache: {
       url: "HTTP://127.0.0.1:7545",
