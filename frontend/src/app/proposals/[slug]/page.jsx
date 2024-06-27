@@ -5,12 +5,16 @@ import { getCampaignDetails } from "../../utils/contract";
 import Image from "next/image";
 import SideBarReward from "@/components/SideBarReward";
 import Link from "next/link";
+import { Checks } from "@phosphor-icons/react";
+import { SocialIcon } from "react-social-icons";
 
 const CampaignDetail = ({ params }) => {
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false); // State untuk melacak status salinan
   const { slug } = params;
-  
+
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       try {
@@ -28,6 +32,20 @@ const CampaignDetail = ({ params }) => {
     }
   }, [slug]);
 
+  const handleShareClick = (platform) => {
+    const campaignLink = window.location.href;
+    if (platform === "x") {
+      const tweetUrl = `https://twitter.com/intent/tweet?text=Lorem%20ipsum%20ispsadf&url=${campaignLink}`;
+    } else if (platform === "copy") {
+      navigator.clipboard.writeText(campaignLink).then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000); // Reset setelah 2 detik
+      }).catch((error) => {
+        console.error("Error copying link to clipboard", error);
+      });
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -42,8 +60,36 @@ const CampaignDetail = ({ params }) => {
         <div className="col-span-1 lg:col-span-3 pr-0 lg:pr-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <h1 className="text-xl lg:text-2xl font-semibold">{campaign.name}</h1>
-            <button className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full">Share</button>
-            <Link target="blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full" href="https://testnets.opensea.io/collection/palestine-need-you-campaign/overview">Store</Link>
+            <div
+              className="relative"
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+            >
+              <button className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full">
+                Share
+              </button>
+              {showDropdown && (
+                <div className="absolute top-full mt-1 bg-white border-[2px] border-color-gray rounded shadow-lg">
+                  <ul className="py-2 px-4">
+                    <li
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleShareClick("x")}
+                    >
+                      <SocialIcon target="blank" style={{ height:25, width: 25 }} url="https://x.com"/>
+                    </li>
+                    <li
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleShareClick("copy")}
+                    >
+                      {copySuccess ? <Checks size={32} />: 'Copy'}
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+            <Link target="blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full" href="https://testnets.opensea.io/collection/palestine-need-you-campaign/overview">
+              Store
+            </Link>
           </div>
           <div className="mt-6">
             <h1 className="text-2xl lg:text-3xl font-bold">{campaign.name}</h1>
@@ -67,7 +113,7 @@ const CampaignDetail = ({ params }) => {
           <h1 className="mt-7 text-xl lg:text-2xl font-semibold">Explore</h1>
         </div>
         <div className="border-t-2 lg:border-t-0 lg:border-l-2 border-color-neutral col-span-1 lg:col-span-2 pt-4 lg:pt-0">
-          <SideBarReward campaignId={slug}/>
+          <SideBarReward campaignId={slug} />
         </div>
       </div>
     </div>
