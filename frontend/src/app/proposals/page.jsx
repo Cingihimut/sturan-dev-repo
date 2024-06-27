@@ -27,7 +27,7 @@ const Participate = () => {
 
   return (
     <div className="p-4 sm:p-6 md:p-9">
-      <h1 className="text-xl sm:text-2xl font-bold">Proposals</h1>
+      <h1 className="text-xl sm:text-2xl font-bold">Hot 🔥</h1>
       <div className="mt-4 flex flex-wrap gap-5 justify-center">
         {campaigns.map((campaign, index) => (
           <div

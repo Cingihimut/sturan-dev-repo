@@ -28,7 +28,7 @@ const SuccessCampaign = () => {
 
   return (
     <div className="p-16">
-      <h1 className="text-2xl font-bold">Success Campaign</h1>
+      <h1 className="text-2xl font-bold">Campaign End</h1>
       <div className="mt-4 flex flex-wrap gap-5 justify-center">
         {closedCampaigns.map((campaign, index) => (
           <div
