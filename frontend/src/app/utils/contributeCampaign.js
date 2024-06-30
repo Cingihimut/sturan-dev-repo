@@ -34,7 +34,7 @@ export const contribute = async (campaignId, amount) => {
 
         const amountInWei = Web3.utils.toWei(amount.toString(), "ether");
 
-        const receipt = await contract.methods.contribute(campaignId, amountInWei).send({ from: sender });
+        const receipt = await contract.methods.contribute(campaignId, amountInWei).send({ from: sender, gas: 3000000 });
 
         console.log("Transaction receipt:", receipt);
         return receipt.transactionHash;

@@ -43,22 +43,28 @@ const OwnerDashboard = () => {
   const handleCreateCampaign = async (e) => {
     e.preventDefault();
     try {
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const endTimeTimestamp = Math.floor(new Date(form.endTime).getTime() / 1000);
-      const duration = endTimeTimestamp - currentTimestamp;
+        const currentTimestamp = Math.floor(Date.now() / 1000);
+        const endTimeTimestamp = Math.floor(new Date(form.endTime).getTime() / 1000);
+        const duration = endTimeTimestamp - currentTimestamp;
 
-      const goalInWei = Web3.utils.toWei(form.goal.toString(), 'ether');
-      const maxContributionInWei = Web3.utils.toWei(form.maxContribution.toString(), 'ether');
-      const maxContributor = parseInt(form.maxContributor, 10);
+        if (duration <= 0) {
+            alert("End time must be in the future");
+            return;
+        }
 
-      await createCampaign(form.name, goalInWei, maxContributionInWei, maxContributor.toString(), duration);
+        const goalInWei = Web3.utils.toWei(form.goal.toString(), 'ether');
+        const maxContributionInWei = Web3.utils.toWei(form.maxContribution.toString(), 'ether');
+        const maxContributor = parseInt(form.maxContributor, 10);
 
-      alert('Campaign created successfully!');
+        await createCampaign(form.name, goalInWei, maxContributionInWei, maxContributor, duration);
+
+        alert('Campaign created successfully!');
     } catch (error) {
-      console.error("Error creating campaign", error);
-      alert('Error creating campaign');
+        console.error("Error creating campaign", error);
+        alert('Error creating campaign');
     }
-  };
+};
+
 
   return (
     <div className="p-4 sm:p-6 md:p-9">

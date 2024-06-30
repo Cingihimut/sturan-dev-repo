@@ -71,12 +71,14 @@ export const createCampaign = async (name, goal, maxContribution, maxContributor
         const contract = await createContractInstance();
         const accounts = await web3Instance.eth.getAccounts();
 
-        await contract.methods.addCampaign(name, goal, maxContribution, maxContributor, duration).send({ from: accounts[0] });
+        await contract.methods.addCampaign(name, goal, maxContribution, maxContributor, duration)
+            .send({ from: accounts[0] });
     } catch (error) {
         console.error("Error creating campaign", error);
         throw error;
     }
 };
+
 
 export const getCampaignDetails = async (campaignId) => {
     try {
