@@ -99,7 +99,6 @@ export const isOwner = async(account) => {
         const contract = new web3.eth.Contract(contractAbi.abi, contractAddress);
         const owner = await contract.methods.owner().call();
         return owner.toLowerCase() === account.toLowerCase();
-        console.log(owner);
     } catch (error) {
         console.error("Error checking status", error);
         throw error
