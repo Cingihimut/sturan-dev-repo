@@ -6,6 +6,7 @@ const infura_api_key = process.env.INFURA_API_KEY;
 const private_key = process.env.PRIVATE_KEY;
 const mnemonic = process.env.MNEMONIC;
 const etherscan_api_key = process.env.ETHERSCAN_API_KEY;
+const wallet_key = process.env.WALLET_KEY;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -17,6 +18,11 @@ module.exports = {
       url: `https://sepolia.infura.io/v3/${infura_api_key}`,
       accounts: [private_key],
     },
+    'base-sepolia': {
+      url: 'https://sepolia.base.org',
+      accounts: [wallet_key],
+      gasPrice: 1000000000,
+    },
     gannache: {
       url: "HTTP://127.0.0.1:7545",
       accounts: ["0xd4d47dc9227fa5bf36a6157002e44b634798295123c7b634cbbd829871f9f0a4"],
@@ -25,7 +31,17 @@ module.exports = {
   etherscan: {
     apiKey:{
       sepolia: etherscan_api_key
-    }
+    },
+    customChains: [
+      {
+        network: "base-sepolia",
+        chainId: 84532,
+        urls: {
+         apiURL: "https://api-sepolia.basescan.org/api",
+         browserURL: "https://sepolia.basescan.org"
+        }
+      }
+    ]
   },
   solidity: {
     version: "0.8.24",

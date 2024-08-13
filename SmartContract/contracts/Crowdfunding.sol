@@ -4,13 +4,32 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "./ICrowdfunding.sol";
+import "./InvestorContract.sol";
 
-contract Crowdfunding is Ownable, ICrowdfunding {
+contract Crowdfunding is Ownable {
     using SafeERC20 for IERC20;
 
     IERC20 private token;
     Campaign[] public campaigns;
+    mapping(uint256 => address) public investorContracts;
+
+    struct Campaign {
+        uint256 id;
+        string name;
+        uint256 goal;
+        uint256 maxContribution;
+        uint256 maxContributor;
+        uint256 duration;
+        uint256 startTime;
+        uint256 endTime;
+        bool isOpen;
+        address[] contributors;
+        mapping(address => uint256) contributions;
+    }
+
+    event CampaignCreated(uint256 indexed campaignId, string name, uint256 goal, uint256 duration);
+    event ContributionMade(uint256 indexed campaignId, address indexed contributor, uint256 amount);
+    event CampaignClosed(uint256 indexed campaignId, string name, uint256 totalRaised);
 
     constructor(address _tokenAddress, address initialOwner) Ownable(initialOwner) {
         token = IERC20(_tokenAddress);
@@ -23,7 +42,7 @@ contract Crowdfunding is Ownable, ICrowdfunding {
         uint256 maxContribution,
         uint256 maxContributor,
         uint256 duration
-    ) external override onlyOwner {
+    ) external onlyOwner {
         uint256 campaignId = campaigns.length;
         campaigns.push();
         Campaign storage newCampaign = campaigns[campaignId];
@@ -39,53 +58,7 @@ contract Crowdfunding is Ownable, ICrowdfunding {
         emit CampaignCreated(campaignId, name, goal, duration);
     }
 
-    function getCampaignCount() external view override returns (uint256) {
-        return campaigns.length;
-    }
-
-    function getCampaignDetails(
-        uint256 campaignId
-    )
-        external
-        view
-        override
-        returns (
-            string memory name,
-            uint256 goal,
-            uint256 maxContribution,
-            uint256 maxContributor,
-            uint256 duration,
-            uint256 startTime,
-            uint256 endTime,
-            bool isOpen,
-            address[] memory contributors,
-            uint256[] memory contributions
-        )
-    {
-        Campaign storage campaign = campaigns[campaignId];
-        uint256[] memory contributionAmounts = new uint256[](
-            campaign.contributors.length
-        );
-        for (uint256 i = 0; i < campaign.contributors.length; i++) {
-            contributionAmounts[i] = campaign.contributions[
-                campaign.contributors[i]
-            ];
-        }
-        return (
-            campaign.name,
-            campaign.goal,
-            campaign.maxContribution,
-            campaign.maxContributor,
-            campaign.duration,
-            campaign.startTime,
-            campaign.endTime,
-            campaign.isOpen,
-            campaign.contributors,
-            contributionAmounts
-        );
-    }
-
-    function contribute(uint256 campaignId, uint256 amount) external override {
+    function contribute(uint256 campaignId, uint256 amount) external {
         Campaign storage campaign = campaigns[campaignId];
         require(
             campaign.isOpen && block.timestamp < campaign.endTime,
@@ -109,53 +82,43 @@ contract Crowdfunding is Ownable, ICrowdfunding {
         campaign.contributions[msg.sender] += amount;
         token.safeTransferFrom(msg.sender, address(this), amount);
 
+        // Create Investor Contract for this contribution
+        InvestorContract investorContract = new InvestorContract(
+            msg.sender,
+            amount,
+            campaignId,
+            address(token)
+        );
+        investorContracts[campaignId] = address(investorContract);
+
         emit ContributionMade(campaignId, msg.sender, amount);
     }
 
-    function closeCampaign(uint256 campaignId) external override onlyOwner {
+    function closeCampaign(uint256 campaignId) external onlyOwner {
         Campaign storage campaign = campaigns[campaignId];
         require(campaign.isOpen, "Campaign is already closed");
 
         campaign.isOpen = false;
         uint256 totalRaised = token.balanceOf(address(this));
+
+        // Distribute dividends to the Investor Contract holders
+        if (totalRaised >= campaign.goal) {
+            address investorContractAddress = investorContracts[campaignId];
+            InvestorContract investorContract = InvestorContract(investorContractAddress);
+            investorContract.distributeDividends(totalRaised);
+        } else {
+            // Refund contributions if the goal was not met
+            for (uint256 i = 0; i < campaign.contributors.length; i++) {
+                address contributor = campaign.contributors[i];
+                uint256 contribution = campaign.contributions[contributor];
+                token.safeTransfer(contributor, contribution);
+            }
+        }
+
         emit CampaignClosed(campaignId, campaign.name, totalRaised);
     }
 
-    function refund(uint256 campaignId) external override {
-        Campaign storage campaign = campaigns[campaignId];
-        require(!campaign.isOpen, "Campaign is still open");
-        require(
-            block.timestamp >= campaign.endTime,
-            "Campaign is not ended yet"
-        );
-
-        uint256 amount = campaign.contributions[msg.sender];
-        require(amount > 0, "No contribution to refund");
-
-        campaign.contributions[msg.sender] = 0;
-        token.safeTransfer(msg.sender, amount);
-
-        emit ContributionRefunded(campaignId, msg.sender, amount);
-    }
-
-    function getContributors(
-        uint256 campaignId
-    ) external view override returns (address[] memory) {
-        return campaigns[campaignId].contributors;
-    }
-
-    function withdrawToken(address to, uint256 amount) external override onlyOwner {
-        token.safeTransfer(to, amount);
-    }
-
-    function getContributorStatus(
-        address account
-    ) external view override returns (bool, uint256) {
-        for (uint256 i = 0; i < campaigns.length; i++) {
-            if (campaigns[i].contributions[account] > 0) {
-                return (true, i);
-            }
-        }
-        return (false, 0);
+    function getInvestorContract(uint256 campaignId) external view returns (address) {
+        return investorContracts[campaignId];
     }
 }
