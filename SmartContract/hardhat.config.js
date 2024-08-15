@@ -16,11 +16,11 @@ module.exports = {
     },
     sepolia: {
       url: `https://sepolia.infura.io/v3/${infura_api_key}`,
-      accounts: [private_key],
+      accounts: [`${private_key}`],
     },
     'base-sepolia': {
       url: 'https://sepolia.base.org',
-      accounts: [wallet_key],
+      accounts: [`${private_key}`],
       gasPrice: 1000000000,
     },
     gannache: {
