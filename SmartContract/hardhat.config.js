@@ -30,7 +30,8 @@ module.exports = {
   },
   etherscan: {
     apiKey:{
-      sepolia: etherscan_api_key
+      sepolia: etherscan_api_key,
+      'base-sepolia': etherscan_api_key
     },
     customChains: [
       {
