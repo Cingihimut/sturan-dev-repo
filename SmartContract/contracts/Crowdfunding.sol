@@ -30,6 +30,7 @@ contract Crowdfunding is Ownable {
     event CampaignCreated(uint256 indexed campaignId, string name, uint256 goal, uint256 duration);
     event ContributionMade(uint256 indexed campaignId, address indexed contributor, uint256 amount);
     event CampaignClosed(uint256 indexed campaignId, string name, uint256 totalRaised);
+    event TokensWithdrawn(address indexed owner, uint256 amount);
 
     constructor(address _tokenAddress, address initialOwner) Ownable(initialOwner) {
         token = IERC20(_tokenAddress);
@@ -120,5 +121,44 @@ contract Crowdfunding is Ownable {
 
     function getInvestorContract(uint256 campaignId) external view returns (address) {
         return investorContracts[campaignId];
+    }
+
+    function getCampaign(uint256 campaignId) external view returns (
+        uint256 id,
+        string memory name,
+        uint256 goal,
+        uint256 maxContribution,
+        uint256 maxContributor,
+        uint256 duration,
+        uint256 startTime,
+        uint256 endTime,
+        bool isOpen
+    ) {
+        Campaign storage campaign = campaigns[campaignId];
+        return (
+            campaign.id,
+            campaign.name,
+            campaign.goal,
+            campaign.maxContribution,
+            campaign.maxContributor,
+            campaign.duration,
+            campaign.startTime,
+            campaign.endTime,
+            campaign.isOpen
+        );
+    }
+
+    function getContributors(uint256 campaignId) external view returns (address[] memory) {
+        Campaign storage campaign = campaigns[campaignId];
+        return campaign.contributors;
+    }
+
+    // New function to withdraw tokens by the owner
+    function withdrawTokens() external onlyOwner {
+        uint256 balance = token.balanceOf(address(this));
+        require(balance > 0, "No tokens to withdraw");
+
+        token.safeTransfer(msg.sender, balance);
+        emit TokensWithdrawn(msg.sender, balance);
     }
 }

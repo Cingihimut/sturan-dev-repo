@@ -3,7 +3,7 @@ import contractAbi from "../../contracts/Crowdfunding.json"
 import { createContractInstance } from "./contract";
 
 let web3;
-const contractAddress = "0x6fe9Eac96fdFCE9Bb73A2fB4D9b8744ce7018EAE";
+const contractAddress = "0x080140434c2a4198F73bEA2829347521340e31cf";
 
 const setInfuraSepoliaNetwork = async () => {
     const networkName = "Sepolia Sturan Network";
@@ -14,11 +14,11 @@ const setInfuraSepoliaNetwork = async () => {
             method: "wallet_addEthereumChain",
             params: [
                 {
-                    chainId: "0xaa36a7", // ID jaringan Sepolia
+                    chainId: "0x14a34", // ID jaringan Sepolia
                     chainName: networkName,
                     nativeCurrency: {
-                        name: "SepoliaETH",
-                        symbol: "SETH",
+                        name: "ETH",
+                        symbol: "ETH",
                         decimals: 18,
                     },
                     rpcUrls: [rpcUrls],
@@ -57,7 +57,7 @@ const checkNetwork = async () => {
 };
 
 const handleNetworkChanged = (networkId) => {
-    const sepoliaNetworkId = "0xaa36a7"; // ID jaringan Sepolia
+    const sepoliaNetworkId = "0x14a34"; // ID jaringan Sepolia
     if (networkId === sepoliaNetworkId) {
         window.location.reload(); // Reload page when network is changed to Sepolia
     }

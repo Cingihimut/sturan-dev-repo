@@ -14,6 +14,8 @@ contract InvestorContract {
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event DividendsDistributed(uint256 totalAmount, uint256 dividend);
+    event TokensDeposited(address indexed from, uint256 amount);
+    event TokensWithdrawn(address indexed to, uint256 amount);
 
     constructor(address _owner, uint256 _contribution, uint256 _campaignId, address _tokenAddress) {
         owner = _owner;
@@ -35,5 +37,21 @@ contract InvestorContract {
         require(newOwner != address(0), "New owner is the zero address");
         emit OwnershipTransferred(owner, newOwner);
         owner = newOwner;
+    }
+
+    // Deposit tokens to the contract
+    function depositTokens(uint256 amount) external {
+        require(amount > 0, "Amount must be greater than zero");
+        token.safeTransferFrom(msg.sender, address(this), amount);
+        emit TokensDeposited(msg.sender, amount);
+    }
+
+    // Owner can withdraw all tokens from the contract
+    function withdrawTokens() external {
+        require(msg.sender == owner, "Only the owner can withdraw tokens");
+        uint256 balance = token.balanceOf(address(this));
+        require(balance > 0, "No tokens to withdraw");
+        token.safeTransfer(owner, balance);
+        emit TokensWithdrawn(owner, balance);
     }
 }
