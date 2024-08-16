@@ -5,16 +5,16 @@ import { createContractInstance } from "./contract";
 let web3;
 const contractAddress = "0x080140434c2a4198F73bEA2829347521340e31cf";
 
-const setInfuraSepoliaNetwork = async () => {
+const setBaseRpcUrl = async () => {
     const networkName = "Sepolia Sturan Network";
-    const rpcUrls = process.env.INFURA_API_KEY;
+    const rpcUrls = "https://base-sepolia-rpc.publicnode.com";
 
     try {
         await ethereum.request({
             method: "wallet_addEthereumChain",
             params: [
                 {
-                    chainId: "0x14a34", // ID jaringan Sepolia
+                    chainId: "0x14a34", // ID jaringan Sepolia base
                     chainName: networkName,
                     nativeCurrency: {
                         name: "ETH",
@@ -22,7 +22,7 @@ const setInfuraSepoliaNetwork = async () => {
                         decimals: 18,
                     },
                     rpcUrls: [rpcUrls],
-                    blockExplorerUrls: ["https://sepolia.etherscan.io/"],
+                    blockExplorerUrls: ["https://sepolia.base.org/"],
                 },
             ],
         });
@@ -35,12 +35,12 @@ const switchToSepoliaNetwork = async () => {
     try {
         await ethereum.request({
             method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0xaa36a7" }], // ID jaringan Sepolia
+            params: [{ chainId: "0x14a34" }], // ID jaringan Sepolia
         });
     } catch (switchError) {
         if (switchError.code === 4902) {
             // Jaringan belum ditambahkan ke MetaMask
-            await setInfuraSepoliaNetwork();
+            await setBaseRpcUrl();
         } else {
             console.error("Failed to switch network in MetaMask:", switchError);
         }

@@ -82,7 +82,7 @@ const OwnerDashboard = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Goal (USDT)</label>
+          <label className="block text-sm font-medium text-gray-700">Goal (USDC)</label>
           <input
             type="number"
             name="goal"
@@ -94,7 +94,7 @@ const OwnerDashboard = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Max Contribution (USDT)</label>
+          <label className="block text-sm font-medium text-gray-700">Max Contribution (USDC)</label>
           <input
             type="number"
             name="maxContribution"
