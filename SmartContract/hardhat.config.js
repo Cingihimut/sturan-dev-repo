@@ -7,6 +7,7 @@ const private_key = process.env.PRIVATE_KEY;
 const mnemonic = process.env.MNEMONIC;
 const etherscan_api_key = process.env.ETHERSCAN_API_KEY;
 const wallet_key = process.env.WALLET_KEY;
+const base_scan = process.env.BASESCAN_API_KEY;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -31,7 +32,7 @@ module.exports = {
   etherscan: {
     apiKey:{
       sepolia: etherscan_api_key,
-      'base-sepolia': etherscan_api_key
+      'base-sepolia': base_scan
     },
     customChains: [
       {
