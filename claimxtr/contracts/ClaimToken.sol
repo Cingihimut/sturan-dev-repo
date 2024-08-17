@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract ClaimToken is ReentrancyGuard {
-    IERC20 public xtrToken;
+    IERC20 public usdcsToken;
     address public owner;
     uint256 public constant MAX_CLAIM_AMOUNT = 200 * 10 ** 18;
     mapping(address => bool) public hasClaimed;
@@ -14,8 +14,8 @@ contract ClaimToken is ReentrancyGuard {
 
     event Claim(address indexed claimers, uint256 amount, uint256 fee);
 
-    constructor(address _xtrTokenAddress) payable {
-        xtrToken = IERC20(_xtrTokenAddress);
+    constructor(address _usdcsTokenAddress) payable {
+        usdcsToken = IERC20(_usdcsTokenAddress);
         owner = msg.sender;
     }
 
@@ -26,12 +26,12 @@ contract ClaimToken is ReentrancyGuard {
 
     function claimXTR() external payable nonReentrant {
         require(!hasClaimed[msg.sender], "You have already claimed XTR Token");
-        require(xtrToken.balanceOf(address(this)) >= MAX_CLAIM_AMOUNT, "Insufficient XTR tokens available for claim");
+        require(usdcsToken.balanceOf(address(this)) >= MAX_CLAIM_AMOUNT, "Insufficient XTR tokens available for claim");
         require(msg.value >= claimFee, "Insufficient fee provided");
 
         hasClaimed[msg.sender] = true;
         claimers.push(msg.sender);
-        xtrToken.transfer(msg.sender, MAX_CLAIM_AMOUNT);
+        usdcsToken.transfer(msg.sender, MAX_CLAIM_AMOUNT);
         emit Claim(msg.sender, MAX_CLAIM_AMOUNT, claimFee);
 
         payable(owner).transfer(claimFee);
@@ -39,7 +39,7 @@ contract ClaimToken is ReentrancyGuard {
 
     function transferXTRContract(uint256 _amount) external onlyOwner {
         require(_amount > 0, "Transfer must be greater than 0");
-        require(xtrToken.transferFrom(msg.sender, address(this), _amount), "Transfer failed");
+        require(usdcsToken.transferFrom(msg.sender, address(this), _amount), "Transfer failed");
     }
 
     function updateClaimFee(uint256 _newFee) external onlyOwner {

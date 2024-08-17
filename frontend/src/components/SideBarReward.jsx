@@ -96,8 +96,8 @@ const SideBarReward = ({ campaignId }) => {
         <p className="mb-4">Rules:</p>
         {campaignDetails && (
           <div className="mb-4">
-            <p>Max Contribution: {formatBigInt(campaignDetails.maxContribution)} USDC</p>
-            <p>Goals: {formatBigInt(campaignDetails.goal)} USDC</p>
+            <p>Max Contribution: {formatBigInt(campaignDetails.maxContribution)} USDCS</p>
+            <p>Goals: {formatBigInt(campaignDetails.goal)} USDCS</p>
           </div>
         )}
         <button 

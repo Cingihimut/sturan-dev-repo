@@ -7,7 +7,7 @@ import contractJson from "../contracts/Usdcs.json";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
-const UsdcsAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
+const UsdcsAddress = "0xbC65E83Fa8D5A482B637f80cc4edc294ad8B5c75";
 
 const CardSubmit = ({ onClose, campaignId }) => {
     const [inputValue, setInputValue] = useState('');

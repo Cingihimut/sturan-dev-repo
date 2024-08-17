@@ -1,8 +1,8 @@
 const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
 module.exports = buildModule("ClaimTokenModule", (m) => {
-  const xtrAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
+  const usdcsAddress = "0xbC65E83Fa8D5A482B637f80cc4edc294ad8B5c75";
 
-  const claimXtr = m.contract("ClaimToken", [xtrAddress]);
+  const claimXtr = m.contract("ClaimToken", [usdcsAddress]);
   return { claimXtr };
 });
