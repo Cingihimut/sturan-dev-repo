@@ -38,7 +38,7 @@ const GetTransaction = ({ campaignId, setContributors }) => {
           {transactions.map((tx, index) => (
             <li key={index} className="mb-2">
               <p>Contributor: </p>
-              <Link target='_blank' href={`https://sepolia.etherscan.io/address/${tx}`} className='hover:text-color-typography hover:duration-200'>{tx}</Link>
+              <Link target='_blank' href={`https://sepolia.basescan.org/address/${tx}`} className='hover:text-color-typography hover:duration-200'>{tx}</Link>
               <hr />
             </li>
           ))}

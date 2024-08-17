@@ -1,15 +1,15 @@
 import Web3 from "web3";
 import { connectWeb3 } from "./web3";
-import xtrContractJson from "../../contracts/Xtr.json";
+import usdcsContractJson from "../../contracts/Usdcs.json";
 import { createContractInstance } from "./contract";
 
-const xtrAbi = xtrContractJson.abi;
-const xtrAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
+const usdcsAbi = usdcsContractJson.abi;
+const usdcsAddress = "0xbC65E83Fa8D5A482B637f80cc4edc294ad8B5c75";
 
 export const approveToken = async (crowdfundingAddress, amount) => {
     try {
         const web3 = await connectWeb3();
-        const tokenContract = new web3.eth.Contract(xtrAbi, xtrAddress);
+        const tokenContract = new web3.eth.Contract(usdcsAbi, usdcsAddress);
 
         const accounts = await web3.eth.getAccounts();
         const sender = accounts[0];

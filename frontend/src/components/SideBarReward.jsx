@@ -79,8 +79,7 @@ const SideBarReward = ({ campaignId }) => {
   return (
     <div className="flex flex-col p-4 lg:p-10">
       <div className="mb-4 flex justify-between">
-        <h1 className="text-lg lg:text-xl font-semibold">Reward Pool</h1>
-        <p className="text-lg lg:text-xl font-semibold">NFT</p>
+        <h1 className="text-lg lg:text-xl font-semibold">Investor Contract</h1>
       </div>
       <div className="border-[2px] border-color-neutral rounded-lg p-4 lg:p-7">
         <div className="flex justify-between py-2 px-3 border-[2px] border-color-neutral rounded-xl mb-4">
@@ -97,8 +96,8 @@ const SideBarReward = ({ campaignId }) => {
         <p className="mb-4">Rules:</p>
         {campaignDetails && (
           <div className="mb-4">
-            <p>Max Contribution: {formatBigInt(campaignDetails.maxContribution)} XTR</p>
-            <p>Goals: {formatBigInt(campaignDetails.goal)} XTR</p>
+            <p>Max Contribution: {formatBigInt(campaignDetails.maxContribution)} USDC</p>
+            <p>Goals: {formatBigInt(campaignDetails.goal)} USDC</p>
           </div>
         )}
         <button 

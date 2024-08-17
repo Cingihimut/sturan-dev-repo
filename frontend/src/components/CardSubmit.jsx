@@ -3,16 +3,16 @@ import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { getConnectedAccount, getTokenBalance } from "../app/utils/contract";
 import { contribute, approveToken } from "../app/utils/contributeCampaign";
-import contractJson from "../contracts/Xtr.json";
+import contractJson from "../contracts/Usdcs.json";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
 const contractAbi = contractJson.abi;
-const XTRAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
+const UsdcsAddress = "0x6F256B3E7650eca65B96f73011beC41638F4253C";
 
 const CardSubmit = ({ onClose, campaignId }) => {
     const [inputValue, setInputValue] = useState('');
     const [account, setAccount] = useState(null);
-    const [XTRBalance, setXTRBalance] = useState(null);
+    const [UsdcsBalance, setUsdcsBalance] = useState(null);
     const [showCardSubmit, setShowCardSubmit] = useState(true);
     const [showDontHaveBalancePopup, setShowDontHaveBalancePopup] = useState(false);
 
@@ -33,8 +33,8 @@ const CardSubmit = ({ onClose, campaignId }) => {
         const fetchBalance = async () => {
             try {
                 if (account) {
-                    const balance = await getTokenBalance(account, contractAbi, XTRAddress);
-                    setXTRBalance(balance);
+                    const balance = await getTokenBalance(account, contractAbi, UsdcsAddress);
+                    setUsdcsBalance(balance);
                     if (balance <= 0) {
                         setShowCardSubmit(false);
                         setShowDontHaveBalancePopup(true);
@@ -66,7 +66,7 @@ const CardSubmit = ({ onClose, campaignId }) => {
         }
 
         const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0x080140434c2a4198F73bEA2829347521340e31cf";
+        const crowdfundingAddress = "0xB2C43b544E321c04B83E1F6268779e1cD9e1c1B4";
 
         try {
             await approveToken(crowdfundingAddress, contributionAmount);
@@ -97,8 +97,8 @@ const CardSubmit = ({ onClose, campaignId }) => {
                             <X size={32} />
                         </button>
                         <div className="px-6 py-4">
-                            <div className="font-bold text-xl mb-2">Enter your XTR Amount</div>
-                            <p className="text-gray-700 text-base">XTR Balance: {XTRBalance}</p>
+                            <div className="font-bold text-xl mb-2">Enter your Usdcs Amount</div>
+                            <p className="text-gray-700 text-base">Usdcs Balance: {UsdcsBalance}</p>
                         </div>
                         <div className="px-6 pt-4 pb-2">
                             <input

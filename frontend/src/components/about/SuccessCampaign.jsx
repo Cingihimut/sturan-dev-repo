@@ -52,7 +52,7 @@ const SuccessCampaign = () => {
                   <h1 className="mt-2">Deadline</h1>
                   <h1 className="mt-2">Goals</h1>
                   <p className="mt-2">{new Date(Number(campaign.endTime) * 1000).toLocaleDateString()}</p>
-                  <p className="text-color-neutral mt-2">{formatGoal(campaign.goal)} XTR</p>
+                  <p className="text-color-neutral mt-2">{formatGoal(campaign.goal)} Usdcs</p>
                 </div>
                 <p className="mt-2 p-2 bg-red-100 border-2 border-red-500 rounded-full text-center">
                   Closed
