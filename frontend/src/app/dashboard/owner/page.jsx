@@ -10,7 +10,6 @@ const OwnerDashboard = () => {
     maxContribution: '',
     maxContributor: '',
     endTime: '',
-
   });
 
   const handleChange = (e) => {

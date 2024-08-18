@@ -68,7 +68,7 @@ const ConnectButton = () => {
                         onClick={handleConnect}
                         className="font-bold p-2 text-color-primary border-[1px] border-color-primary border-opacity-15 hover:shadow-xl rounded-xl transition-all duration-300 ease-out"
                     >
-                        Connect
+                        Register/Connect
                     </button>
                 </>
             )}

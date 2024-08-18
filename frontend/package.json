@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "2.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,7 @@
     "@material-tailwind/html": "^2.2.2",
     "@phosphor-icons/react": "^2.1.5",
     "@pinata/sdk": "^2.1.0",
-    "@tanstack/react-query": "^5.40.0",
+    "@tanstack/react-query": "^5.51.23",
     "@thirdweb-dev/react": "^4.9.4",
     "@walletconnect/modal": "^2.6.2",
     "@web3modal/wagmi": "^4.2.3",
@@ -28,13 +28,14 @@
     "react-dom": "^18",
     "react-social-icons": "^6.16.0",
     "typeit-react": "^2.7.1",
-    "viem": "^2.13.1",
-    "wagmi": "^2.9.8",
+    "viem": "^2.19.6",
+    "wagmi": "^2.12.5",
     "web3": "^4.9.0"
   },
   "devDependencies": {
     "@types/react": "18.3.3",
     "postcss": "^8",
+    "prisma": "^5.18.0",
     "tailwindcss": "^3.4.1"
   }
 }
