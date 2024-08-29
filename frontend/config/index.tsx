@@ -1,10 +1,10 @@
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
-
 import { cookieStorage, createStorage } from 'wagmi'
 import { baseSepolia } from 'wagmi/chains'
 
+require("dotenv").config()
 // Your WalletConnect Cloud project ID
-export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+export const projectId = process.env.PROJECT_ID;
 
 // Create a metadata object
 const metadata = {
