@@ -1,13 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Participate from "./proposals/page";
 import News from "../components/news/News";
 import Partnership from "../components/partnership/Partnership";
 import SuccessCampaign from "@/components/about/SuccessCampaign";
+import SignClient from '@walletconnect/sign-client'
 
 const Page = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [signClient, setSignClient] = useState(null);
+
+  useEffect(() => {
+    const initSignClient = async () => {
+      try {
+        const client = await SignClient.init({
+          projectId: process.env.NEXT_PUBLIC_PROJECT_ID
+        });
+        setSignClient(client);
+        console.log('SignClient initialized:', client);
+      } catch (error) {
+        console.error('Failed to initialize SignClient:', error);
+      }
+    };
+
+    initSignClient();
+  }, []);
 
   const images = [
     "/assets/campaign-palestine.png",
@@ -52,7 +70,7 @@ const Page = () => {
       </div>
       <Participate />
       <News />
-      <Partnership/>
+      <Partnership />
       <SuccessCampaign />
     </>
   );
