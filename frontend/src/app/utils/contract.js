@@ -2,7 +2,7 @@ import { connectWeb3 } from "./web3";
 import Web3 from "web3";
 import crowdfundingABI from "../../contracts/Crowdfunding.json";
 
-const contractAddress = "0xB2C43b544E321c04B83E1F6268779e1cD9e1c1B4";
+const contractAddress = "0xF6D8Dfb75f0aeB4fdd9FeE729EC9D88F095C1D9F";
 
 export const getConnectedAccount = async () => {
     try {
@@ -36,33 +36,7 @@ export const createContractInstance = async() => {
 };
 
 export const getCampaigns = async () => {
-    try {
-        const contract = await createContractInstance();
-        const campaignCount = await contract.methods.getCampaignCount().call();
-        const campaigns = [];
-
-        for (let i = 0; i < campaignCount; i++) {
-            const campaign = await contract.methods.campaigns(i).call();
-            campaigns.push({
-                id: i,
-                name: campaign.name,
-                goal: campaign.goal,
-                maxContribution: campaign.maxContribution,
-                maxContributor: campaign.maxContributor,
-                duration: campaign.duration,
-                startTime: campaign.startTime,
-                endTime: campaign.endTime,
-                isOpen: campaign.isOpen,
-                contributors: campaign.contributors,
-                contributions: campaign.contributions
-            });
-        }
-
-        return campaigns;
-    } catch (error) {
-        console.error("Error fetching campaigns", error);
-        return [];
-    }
+    
 };
 
 export const createCampaign = async (name, goal, maxContribution, maxContributor, duration) => {
