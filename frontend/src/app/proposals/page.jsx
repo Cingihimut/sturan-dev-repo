@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCampaigns } from '../utils/contract';
+import { getCampaigns } from '../utils/ethers';
 
 const Participate = () => {
   const [campaigns, setCampaigns] = useState([]);

@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import contractAbi from "../../contracts/Crowdfunding.json";
-import { connectWeb3 } from "./web3";
+import { connectWeb3 } from "./ethers";
 
 const crowdfundingAddress = "0xB2C43b544E321c04B83E1F6268779e1cD9e1c1B4";
 const crowdfundingAbi = contractAbi.abi;

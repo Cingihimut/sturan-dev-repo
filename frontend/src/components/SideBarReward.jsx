@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { connectWeb3 } from "../app/utils/web3";
+import { connectWeb3 } from "../app/utils/ethers";
 import { getCampaignDetails } from "../app/utils/contract";
 import CardSubmit from "./CardSubmit";
 import GetTransaction from "@/app/dataContributor/GetTransaction";

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Participate from "./proposals/page";
 import News from "../components/news/News";
 import Partnership from "../components/partnership/Partnership";
-import SuccessCampaign from "@/components/about/SuccessCampaign";
+import SuccessCampaign from "../components/about/SuccessCampaign";
 import SignClient from '@walletconnect/sign-client'
 
 const Page = () => {

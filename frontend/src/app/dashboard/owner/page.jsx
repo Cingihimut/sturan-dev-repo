@@ -1,15 +1,19 @@
 "use client";
+
+import { ethers } from 'ethers';
 import React, { useState } from 'react';
-import Web3 from 'web3';
-import { createCampaign } from "../../utils/contract";
+import { useCreateCampaign } from "../../utils/ethers";
 
 const OwnerDashboard = () => {
+
+  const createCampaign = useCreateCampaign()
+
   const [form, setForm] = useState({
-    name: '',
-    goal: '',
-    maxContribution: '',
-    maxContributor: '',
-    endTime: '',
+    name: "",
+    goal: "",
+    maxContribution: "",
+    maxContributor: "",
+    endTime: ""
   });
 
   const handleChange = (e) => {
@@ -19,56 +23,40 @@ const OwnerDashboard = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const endTimeTimestamp = Math.floor(new Date(form.endTime).getTime() / 1000);
-      const duration = endTimeTimestamp - currentTimestamp;
-
-      const goalInWei = Web3.utils.toWei(form.goal.toString(), 'ether');
-      const maxContributionInWei = Web3.utils.toWei(form.maxContribution.toString(), 'ether');
-      const maxContributor = parseInt(form.maxContributor, 10);
-
-      await createCampaign(form.name, goalInWei, maxContributionInWei, maxContributor.toString(), duration);
-
-      alert('Campaign created successfully and NFT minted!');
-    } catch (error) {
-      console.error("Error creating campaign or minting NFT", error);
-      alert('Error creating campaign or minting NFT');
-    }
-  };
+  const handleCreateCampaign = async () => {
+    if (typeof window.ethereum !== "undefined") {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
   
-  const handleCreateCampaign = async (e) => {
-    e.preventDefault();
-    try {
-        const currentTimestamp = Math.floor(Date.now() / 1000);
-        const endTimeTimestamp = Math.floor(new Date(form.endTime).getTime() / 1000);
-        const duration = endTimeTimestamp - currentTimestamp;
-
-        if (duration <= 0) {
-            alert("End time must be in the future");
-            return;
-        }
-
-        const goalInWei = Web3.utils.toWei(form.goal.toString(), 'ether');
-        const maxContributionInWei = Web3.utils.toWei(form.maxContribution.toString(), 'ether');
-        const maxContributor = parseInt(form.maxContributor, 10);
-
-        await createCampaign(form.name, goalInWei, maxContributionInWei, maxContributor, duration);
-
-        alert('Campaign created successfully!');
-    } catch (error) {
+      const durationInSeconds = Math.floor((new Date(form.endTime).getTime() / 1000) - (new Date().getTime() / 1000));
+  
+      if (!form.name || !form.goal || !form.maxContribution || !form.maxContributor || durationInSeconds <= 0) {
+        alert("Please fill out all fields correctly.");
+        return;
+      }
+  
+      try {
+        await createCampaign(
+          form.name,
+          ethers.utils.parseUnits(form.goal, 18), // Konversi string menjadi BigInt
+          ethers.utils.parseUnits(form.maxContribution, 18), // Konversi string menjadi BigInt
+          BigInt(form.maxContributor), // Pastikan ini adalah BigInt
+          BigInt(durationInSeconds) // Pastikan ini juga BigInt
+        );
+        alert("Campaign created successfully");
+      } catch (error) {
         console.error("Error creating campaign", error);
-        alert('Error creating campaign');
+        alert("Failed to create campaign");
+      }
+    } else {
+      alert("Please install MetaMask first");
     }
-};
-
+  };  
 
   return (
     <div className="p-4 sm:p-6 md:p-9">
       <h1 className="text-xl sm:text-2xl font-bold">Owner Dashboard</h1>
-      <form onSubmit={handleSubmit} className="mt-4">
+      <form onSubmit={(e) => e.preventDefault()} className="mt-4">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Campaign Name</label>
           <input

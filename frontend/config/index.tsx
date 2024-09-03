@@ -3,10 +3,8 @@ import { cookieStorage, createStorage } from 'wagmi'
 import { baseSepolia } from 'wagmi/chains'
 
 require("dotenv").config()
-// Your WalletConnect Cloud project ID
-export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+export const projectId = '4f6b26c1c1f5a9397bcc8eea93096f21';
 
-// Create a metadata object
 const metadata = {
   name: 'sturan',
   description: 'Blockchain Crowdfunding',
@@ -20,10 +18,6 @@ export const config = defaultWagmiConfig({
   chains,
   projectId,
   metadata,
-  auth:{
-    email: true,
-    socials: ['google', 'x', 'github', 'discord', 'apple', 'facebook'],
-  },
   ssr: true,
   storage: createStorage({
     storage: cookieStorage

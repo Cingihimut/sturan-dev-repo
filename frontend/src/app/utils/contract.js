@@ -1,4 +1,4 @@
-import { connectWeb3 } from "./web3";
+import { connectWeb3 } from "./ethers";
 import Web3 from "web3";
 import crowdfundingABI from "../../contracts/Crowdfunding.json";
 
@@ -52,7 +52,6 @@ export const createCampaign = async (name, goal, maxContribution, maxContributor
         throw error;
     }
 };
-
 
 export const getCampaignDetails = async (campaignId) => {
     try {

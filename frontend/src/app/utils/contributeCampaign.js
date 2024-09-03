@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import { connectWeb3 } from "./web3";
+import { connectWeb3 } from "./ethers";
 import usdcsContractJson from "../../contracts/Usdcs.json";
 import { createContractInstance } from "./contract";
 
