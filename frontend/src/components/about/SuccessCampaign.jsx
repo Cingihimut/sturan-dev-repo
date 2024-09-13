@@ -2,19 +2,29 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCampaigns } from "../../app/utils/contract";
+import { useGetCampaignCount, useGetCampaignDetails } from "../../app/utils/contract";
+import { formatUnits } from 'viem';
 
 const SuccessCampaign = () => {
   const [closedCampaigns, setClosedCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchClosedCampaigns = async () => {
       try {
-        const campaignList = await getCampaigns();
-        const closedList = campaignList.filter(campaign => !campaign.isOpen);
+        setLoading(true);
+        const count = await useGetCampaignCount();
+        const campaignPromises = [];
+        for (let i = 0; i < Number(count); i++) {
+          campaignPromises.push(useGetCampaignDetails(i));
+        }
+        const campaignData = await Promise.all(campaignPromises);
+        const closedList = campaignData.filter(campaign => !campaign[7]); // campaign[7] is isOpen
         setClosedCampaigns(closedList);
       } catch (error) {
         console.error("Error fetching campaigns", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -22,9 +32,12 @@ const SuccessCampaign = () => {
   }, []);
 
   const formatGoal = (goal) => {
-    const goalInEther = Number(goal) / 1e18; // Convert from wei to ether
-    return goalInEther.toLocaleString(); // Format with commas as thousand separators
+    return formatUnits(goal, 18);
   };
+
+  if (loading) {
+    return <p>Loading closed campaigns...</p>;
+  }
 
   return (
     <div className="p-16">
@@ -35,7 +48,7 @@ const SuccessCampaign = () => {
             key={index}
             className="w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1rem)] lg:w-[calc(25%-1rem)] border-[2px] border-color-neutral rounded-xl p-4 link-hover hover:shadow-lg transition-shadow duration-300"
           >
-            <Link href={`/proposals/${campaign.id}`}>
+            <Link href={`/proposals/${index}`}>
               <div className="flex flex-col h-full">
                 <div className="flex justify-center">
                   <Image
@@ -46,13 +59,13 @@ const SuccessCampaign = () => {
                     className="p-4"
                   />
                 </div>
-                <h1 className="font-semibold text-center sm:text-left">{campaign.name}</h1>
+                <h1 className="font-semibold text-center sm:text-left">{campaign[0]}</h1>
                 <p className="text-center sm:text-left">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                 <div className="font-semibold grid grid-cols-2 gap-2 mt-2">
                   <h1 className="mt-2">Deadline</h1>
                   <h1 className="mt-2">Goals</h1>
-                  <p className="mt-2">{new Date(Number(campaign.endTime) * 1000).toLocaleDateString()}</p>
-                  <p className="text-color-neutral mt-2">{formatGoal(campaign.goal)} Usdcs</p>
+                  <p className="mt-2">{new Date(Number(campaign[6]) * 1000).toLocaleDateString()}</p>
+                  <p className="text-color-neutral mt-2">{formatGoal(campaign[1])} USDCS</p>
                 </div>
                 <p className="mt-2 p-2 bg-red-100 border-2 border-red-500 rounded-full text-center">
                   Closed

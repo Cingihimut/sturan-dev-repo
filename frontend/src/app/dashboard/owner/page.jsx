@@ -1,13 +1,8 @@
-"use client";
-
-import { ethers } from 'ethers';
+"use client"
 import React, { useState } from 'react';
-import { useCreateCampaign } from "../../utils/ethers";
+import { useCreateCampaign, useIsOwner } from '../../utils/contract';
 
 const OwnerDashboard = () => {
-
-  const createCampaign = useCreateCampaign()
-
   const [form, setForm] = useState({
     name: "",
     goal: "",
@@ -16,6 +11,9 @@ const OwnerDashboard = () => {
     endTime: ""
   });
 
+  const { createCampaign, isLoading, isSuccess, error } = useCreateCampaign();
+  const isOwner = useIsOwner();
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -23,39 +21,29 @@ const OwnerDashboard = () => {
     });
   };
 
-  const handleCreateCampaign = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-  
-      const durationInSeconds = Math.floor((new Date(form.endTime).getTime() / 1000) - (new Date().getTime() / 1000));
-  
-      if (!form.name || !form.goal || !form.maxContribution || !form.maxContributor || durationInSeconds <= 0) {
-        alert("Please fill out all fields correctly.");
-        return;
-      }
-  
-      try {
-        await createCampaign(
-          form.name,
-          ethers.utils.parseUnits(form.goal, 18), // Konversi string menjadi BigInt
-          ethers.utils.parseUnits(form.maxContribution, 18), // Konversi string menjadi BigInt
-          BigInt(form.maxContributor), // Pastikan ini adalah BigInt
-          BigInt(durationInSeconds) // Pastikan ini juga BigInt
-        );
-        alert("Campaign created successfully");
-      } catch (error) {
-        console.error("Error creating campaign", error);
-        alert("Failed to create campaign");
-      }
-    } else {
-      alert("Please install MetaMask first");
+  const handleClick = async () => {
+    if (!isOwner) {
+      alert("Only the owner can create campaigns");
+      return;
     }
-  };  
+    
+    try {
+      await createCampaign(
+        form.name,
+        form.goal,
+        form.maxContributor,
+        form.maxContribution,
+        form.endTime
+      );
+    } catch (err) {
+      console.error("Error creating campaign:", err);
+    }
+  };
 
   return (
     <div className="p-4 sm:p-6 md:p-9">
       <h1 className="text-xl sm:text-2xl font-bold">Owner Dashboard</h1>
+      {!isOwner && <p className="text-red-500 mt-2">You are not the owner of this contract.</p>}
       <form onSubmit={(e) => e.preventDefault()} className="mt-4">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Campaign Name</label>
@@ -115,16 +103,19 @@ const OwnerDashboard = () => {
             required
           />
         </div>
-        <div className='flex justify-between'>
+        <div className="flex justify-between">
           <button
             type="button"
-            onClick={handleCreateCampaign}
-            className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={handleClick}
+            className={`text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isLoading || !isOwner}
           >
-            Create Campaign
+            {isLoading ? "Creating..." : "Add Campaign"}
           </button>
         </div>
       </form>
+      {isSuccess && <p className="text-green-500">Campaign created successfully!</p>}
+      {error && <p className="text-red-500">Error: {error.message}</p>}
     </div>
   );
 };

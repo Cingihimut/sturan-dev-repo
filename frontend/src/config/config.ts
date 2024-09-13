@@ -1,3 +1,4 @@
+import { walletConnect } from "@wagmi/connectors";
 import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { baseSepolia } from "viem/chains";
 

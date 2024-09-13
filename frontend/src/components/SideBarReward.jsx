@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { connectWeb3 } from "../app/utils/ethers";
 import { getCampaignDetails } from "../app/utils/contract";
 import CardSubmit from "./CardSubmit";
-import GetTransaction from "@/app/dataContributor/GetTransaction";
 
 const SideBarReward = ({ campaignId }) => {
   const [account, setAccount] = useState(null);
@@ -91,7 +89,7 @@ const SideBarReward = ({ campaignId }) => {
           </h1>
         </div>
         <div className="flex justify-center mb-4">
-          <Image src="/assets/dummy-member.jpeg" width="250" height="250" alt="..." className="w-full h-auto max-w-xs lg:max-w-none" />
+          <Image src="/assets/dummy-member.jpeg" width="250" height="250" alt="Campaign image" className="w-full h-auto max-w-xs lg:max-w-none" />
         </div>
         <p className="mb-4">Rules:</p>
         {campaignDetails && (

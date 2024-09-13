@@ -1,33 +1,8 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { fetchingTransaction } from '../utils/fetchingDataTransaction';
 import Link from 'next/link';
 
-const GetTransaction = ({ campaignId, setContributors }) => {
-  const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const data = await fetchingTransaction(campaignId);
-        setTransactions(data);
-        setContributors(data);
-      } catch (error) {
-        console.error("Error fetching transactions", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (campaignId) {
-      fetchTransactions();
-    }
-  }, [campaignId, setContributors]);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+const GetTransaction = () => {
 
   return (
     <div>

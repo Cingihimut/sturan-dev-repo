@@ -1,0 +1,56 @@
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { Abi, parseUnits } from 'viem';
+import Crowdfunding from "../../contracts/Crowdfunding.json";
+
+const CROWDFUNDING_CONTRACT_ADDRESS = "0xF6D8Dfb75f0aeB4fdd9FeE729EC9D88F095C1D9F";
+const USDCS_CONTRACT_ADDRESS = "0x57c58d1869e9c354683C2477759402ba7Cb99043";
+
+export const useIsOwner = () => {
+  const { address } = useAccount();
+  const { data: ownerAddress, isLoading } = useReadContract({
+    abi: Crowdfunding.abi as Abi,
+    address: CROWDFUNDING_CONTRACT_ADDRESS,
+    functionName: 'owner',
+  });
+
+  if (isLoading || !ownerAddress) {
+    return false;
+  }
+  return (ownerAddress as string).toLowerCase() === address?.toLowerCase();
+};
+
+export const useCreateCampaign = () => {
+  const { writeContract, isLoading, isSuccess, error } = useWriteContract();
+
+  const createCampaign = async (name: string, goal: string, maxContributor: string, maxContribution: string, endTime: string) => {
+    const goalInWei = parseUnits(goal, 18);
+    const maxContributionInWei = parseUnits(maxContribution, 18);
+    const endTimeInSeconds = Math.floor(new Date(endTime).getTime() / 1000);
+
+    await writeContract({
+      abi: Crowdfunding.abi as Abi,
+      address: CROWDFUNDING_CONTRACT_ADDRESS,
+      functionName: 'addCampaign',
+      args: [name, goalInWei, BigInt(maxContributor), maxContributionInWei, BigInt(endTimeInSeconds)],
+    });
+  };
+
+  return { createCampaign, isLoading, isSuccess, error };
+};
+
+export const useFetchCampaigns = () => {
+  const { data: campaignCount, isLoading: isCountLoading } = useReadContract({
+    abi: Crowdfunding.abi as Abi,
+    address: CROWDFUNDING_CONTRACT_ADDRESS,
+    functionName: 'getCampaignCount',
+  });
+
+  const { data: campaignDetails, isLoading: isDetailsLoading } = useReadContract({
+    abi: Crowdfunding.abi as Abi,
+    address: CROWDFUNDING_CONTRACT_ADDRESS,
+    functionName: 'getCampaignDetails',
+    args: [0], // This will be updated in the component
+  });
+
+  return { campaignCount, isCountLoading, campaignDetails, isDetailsLoading };
+};

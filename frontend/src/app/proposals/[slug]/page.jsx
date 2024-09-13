@@ -1,24 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCampaignDetails } from "../../utils/contract";
 import Image from "next/image";
-import SideBarReward from "@/components/SideBarReward";
 import Link from "next/link";
+import SideBarReward from "../../../components/SideBarReward";
 import { Checks } from "@phosphor-icons/react";
 import { SocialIcon } from "react-social-icons";
+import { useFetchCampaigns } from "../../utils/contract";
 
 const CampaignDetail = ({ params }) => {
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false); // State untuk melacak status salinan
+  const [copySuccess, setCopySuccess] = useState(false);
   const { slug } = params;
 
   useEffect(() => {
     const fetchCampaignDetails = async () => {
       try {
-        const campaignDetails = await getCampaignDetails(slug);
+        const campaignDetails = await useFetchCampaigns(Number(slug));
         setCampaign(campaignDetails);
       } catch (error) {
         console.error("Error fetching campaign details", error);
@@ -35,11 +35,11 @@ const CampaignDetail = ({ params }) => {
   const handleShareClick = (platform) => {
     const campaignLink = window.location.href;
     if (platform === "x") {
-      const tweetUrl = `https://twitter.com/intent/tweet?text=Lorem%20ipsum%20ispsadf&url=${campaignLink}`;
+      window.open(`https://twitter.com/intent/tweet?text=Check%20out%20this%20campaign!&url=${campaignLink}`, '_blank');
     } else if (platform === "copy") {
       navigator.clipboard.writeText(campaignLink).then(() => {
         setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000); // Reset setelah 2 detik
+        setTimeout(() => setCopySuccess(false), 2000);
       }).catch((error) => {
         console.error("Error copying link to clipboard", error);
       });
@@ -75,7 +75,7 @@ const CampaignDetail = ({ params }) => {
                       className="p-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleShareClick("x")}
                     >
-                      <SocialIcon target="blank" style={{ height:25, width: 25 }} url="https://x.com"/>
+                      <SocialIcon target="_blank" style={{ height:25, width: 25 }} url="https://x.com"/>
                     </li>
                     <li
                       className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -87,7 +87,7 @@ const CampaignDetail = ({ params }) => {
                 </div>
               )}
             </div>
-            <Link target="blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full" href="https://testnets.opensea.io/collection/palestine-need-you-campaign/overview">
+            <Link target="_blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full" href="https://testnets.opensea.io/collection/palestine-need-you-campaign/overview">
               Store
             </Link>
           </div>
@@ -104,16 +104,15 @@ const CampaignDetail = ({ params }) => {
           </div>
           <div className="mt-6 lg:mt-12">
             <h1 className="font-semibold text-2xl lg:text-3xl">Article</h1>
-            <p className="mt-2 lg:mt-4">{/* Insert campaign article or description here */}</p>
+            <p className="mt-2 lg:mt-4">{campaign.description || "No description available."}</p>
             <div className="flex justify-center items-center mt-4">
-              <Image src="/assets/dummy-foto.png" height="400" width="400" alt="..." className="w-full h-auto" />
+              <Image src="/assets/dummy-foto.png" height="400" width="400" alt="Campaign image" className="w-full h-auto" />
             </div>
-            <p className="mt-4">{/* Insert more campaign description here */}</p>
           </div>
           <h1 className="mt-7 text-xl lg:text-2xl font-semibold">Explore</h1>
         </div>
         <div className="border-t-2 lg:border-t-0 lg:border-l-2 border-color-neutral col-span-1 lg:col-span-2 pt-4 lg:pt-0">
-          <SideBarReward campaignId={slug} />
+          <SideBarReward campaignId={Number(slug)} />
         </div>
       </div>
     </div>

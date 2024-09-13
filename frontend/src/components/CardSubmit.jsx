@@ -1,8 +1,6 @@
 "use client";
 import { X } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
-import { getConnectedAccount, getTokenBalance } from "../app/utils/contract";
-import { contribute, approveToken } from "../app/utils/contributeCampaign";
 import contractJson from "../contracts/Usdcs.json";
 import DontHaveBalance from "./alert/DontHaveBalance";
 
@@ -10,77 +8,77 @@ const contractAbi = contractJson.abi;
 const UsdcsAddress = "0xbC65E83Fa8D5A482B637f80cc4edc294ad8B5c75";
 
 const CardSubmit = ({ onClose, campaignId }) => {
-    const [inputValue, setInputValue] = useState('');
-    const [account, setAccount] = useState(null);
-    const [UsdcsBalance, setUsdcsBalance] = useState(null);
-    const [showCardSubmit, setShowCardSubmit] = useState(true);
-    const [showDontHaveBalancePopup, setShowDontHaveBalancePopup] = useState(false);
+    // const [inputValue, setInputValue] = useState('');
+    // const [account, setAccount] = useState(null);
+    // const [UsdcsBalance, setUsdcsBalance] = useState(null);
+    // const [showCardSubmit, setShowCardSubmit] = useState(true);
+    // const [showDontHaveBalancePopup, setShowDontHaveBalancePopup] = useState(false);
 
-    useEffect(() => {
-        const initializeAccount = async () => {
-            try {
-                const connectedAccount = await getConnectedAccount();
-                setAccount(connectedAccount);
-            } catch (error) {
-                console.error("Error initializing account", error);
-            }
-        };
+    // useEffect(() => {
+    //     const initializeAccount = async () => {
+    //         try {
+    //             const connectedAccount = await getConnectedAccount();
+    //             setAccount(connectedAccount);
+    //         } catch (error) {
+    //             console.error("Error initializing account", error);
+    //         }
+    //     };
 
-        initializeAccount();
-    }, []);
+    //     initializeAccount();
+    // }, []);
 
-    useEffect(() => {
-        const fetchBalance = async () => {
-            try {
-                if (account) {
-                    const balance = await getTokenBalance(account, contractAbi, UsdcsAddress);
-                    setUsdcsBalance(balance);
-                    if (balance <= 0) {
-                        setShowCardSubmit(false);
-                        setShowDontHaveBalancePopup(true);
-                    }
-                }
-            } catch (error) {
-                console.error("Error getting user info", error);
-            }
-        };
-        fetchBalance();
-    }, [account]);
+    // useEffect(() => {
+    //     const fetchBalance = async () => {
+    //         try {
+    //             if (account) {
+    //                 const balance = await getTokenBalance(account, contractAbi, UsdcsAddress);
+    //                 setUsdcsBalance(balance);
+    //                 if (balance <= 0) {
+    //                     setShowCardSubmit(false);
+    //                     setShowDontHaveBalancePopup(true);
+    //                 }
+    //             }
+    //         } catch (error) {
+    //             console.error("Error getting user info", error);
+    //         }
+    //     };
+    //     fetchBalance();
+    // }, [account]);
 
-    const handleChange = (event) => {
-        const value = event.target.value;
-        if (/^\d*\.?\d*$/.test(value)) {
-            setInputValue(value);
-        }
-    }; 
+    // const handleChange = (event) => {
+    //     const value = event.target.value;
+    //     if (/^\d*\.?\d*$/.test(value)) {
+    //         setInputValue(value);
+    //     }
+    // }; 
     
-    const handleSubmit = async () => {
-        if (!campaignId) {
-            console.error("Campaign ID is undefined");
-            return;
-        }
+    // const handleSubmit = async () => {
+    //     if (!campaignId) {
+    //         console.error("Campaign ID is undefined");
+    //         return;
+    //     }
 
-        if (inputValue === '') {
-            console.log('Input value is empty');
-            return;
-        }
+    //     if (inputValue === '') {
+    //         console.log('Input value is empty');
+    //         return;
+    //     }
 
-        const contributionAmount = parseFloat(inputValue);
-        const crowdfundingAddress = "0xB2C43b544E321c04B83E1F6268779e1cD9e1c1B4";
+    //     const contributionAmount = parseFloat(inputValue);
+    //     const crowdfundingAddress = "0xB2C43b544E321c04B83E1F6268779e1cD9e1c1B4";
 
-        try {
-            await approveToken(crowdfundingAddress, contributionAmount);
-            console.log("Approval successful");
-            const transactionHash = await contribute(campaignId, contributionAmount);
-            console.log("Contribution successful, transaction hash:", transactionHash);
-            onClose();
-        } catch (error) {
-            console.error("Error submitting contribution:", error);
-        }
-    };
+    //     try {
+    //         await approveToken(crowdfundingAddress, contributionAmount);
+    //         console.log("Approval successful");
+    //         const transactionHash = await contribute(campaignId, contributionAmount);
+    //         console.log("Contribution successful, transaction hash:", transactionHash);
+    //         onClose();
+    //     } catch (error) {
+    //         console.error("Error submitting contribution:", error);
+    //     }
+    // };
     return (
         <>
-            {showDontHaveBalancePopup && (
+            {/* {showDontHaveBalancePopup && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
                     <div className="relative bg-white max-w-sm rounded overflow-hidden shadow-lg p-1">
                         <button onClick={() => setShowDontHaveBalancePopup(false)} className="absolute right-0 mt-10 mr-2 bg-red-500 text-white rounded-full">
@@ -114,7 +112,7 @@ const CardSubmit = ({ onClose, campaignId }) => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </>
     );
 };
