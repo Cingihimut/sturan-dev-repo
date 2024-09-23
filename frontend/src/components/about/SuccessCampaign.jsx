@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useGetCampaignCount, useGetCampaignDetails } from "../../app/utils/contract";
+import { useFetchCampaignById, useFetchCampaigns } from "../../app/utils/contract";
 import { formatUnits } from 'viem';
 
 const SuccessCampaign = () => {
@@ -13,10 +13,10 @@ const SuccessCampaign = () => {
     const fetchClosedCampaigns = async () => {
       try {
         setLoading(true);
-        const count = await useGetCampaignCount();
+        const count = await useFetchCampaignById();
         const campaignPromises = [];
         for (let i = 0; i < Number(count); i++) {
-          campaignPromises.push(useGetCampaignDetails(i));
+          campaignPromises.push(useFetchCampaigns(i));
         }
         const campaignData = await Promise.all(campaignPromises);
         const closedList = campaignData.filter(campaign => !campaign[7]); // campaign[7] is isOpen

@@ -5,27 +5,9 @@ import Image from 'next/image';
 import { useFetchCampaigns } from '../utils/contract';
 import { useReadContract } from 'wagmi';
 import Crowdfunding from "../../contracts/Crowdfunding.json";
+import { formatUnits } from 'ethers/lib/utils';
 
 const CROWDFUNDING_CONTRACT_ADDRESS = "0xF6D8Dfb75f0aeB4fdd9FeE729EC9D88F095C1D9F";
-
-// Fungsi helper untuk memformat angka besar
-const formatLargeNumber = (num) => {
-  if (num >= 1e18) {
-    return (num / 1e18).toFixed(2) + ' Quintillion';
-  } else if (num >= 1e15) {
-    return (num / 1e15).toFixed(2) + ' Quadrillion';
-  } else if (num >= 1e12) {
-    return (num / 1e12).toFixed(2) + ' Trillion';
-  } else if (num >= 1e9) {
-    return (num / 1e9).toFixed(2) + ' Billion';
-  } else if (num >= 1e6) {
-    return (num / 1e6).toFixed(2) + ' Million';
-  } else if (num >= 1e3) {
-    return (num / 1e3).toFixed(2) + ' Thousand';
-  } else {
-    return num.toFixed(2);
-  }
-};
 
 const Participate = () => {
   const { campaignCount, isCountLoading } = useFetchCampaigns();
@@ -46,8 +28,8 @@ const Participate = () => {
         {
           id: currentCampaignId,
           name: campaignDetails[0],
-          goal: campaignDetails[1],
-          maxContribution: campaignDetails[2],
+          goal: formatUnits(campaignDetails[1], 18),
+          maxContribution: formatUnits(campaignDetails[2], 18),
           maxContributor: campaignDetails[3],
           duration: campaignDetails[4],
           startTime: campaignDetails[5],
@@ -66,6 +48,19 @@ const Participate = () => {
     return <div>Loading campaigns...</div>;
   }
 
+  const formatDate = (timestamp) => {
+    if (!timestamp) return 'N/A';
+    return new Date(Number(timestamp) * 1000).toLocaleDateString();
+  };
+
+  const formatCurrency = (amount) => {
+    if (!amount) return 'N/A';
+    return parseFloat(amount).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   return (
     <div className="p-4 sm:p-6 md:p-9">
       <h1 className="text-xl sm:text-2xl font-bold">Available Campaigns</h1>
@@ -82,17 +77,17 @@ const Participate = () => {
                     src="/assets/dummy-member.jpeg"
                     height={250}
                     width={250}
-                    alt="..."
+                    alt="Campaign image"
                     className="p-4"
                   />
                 </div>
-                <h1 className="font-semibold text-center sm:text-left">{campaign.name}</h1>
-                <p className="text-center sm:text-left">Goal: {formatLargeNumber(Number(campaign.goal))} USDC</p>
+                <h1 className="font-semibold text-center sm:text-left">{campaign.name || 'Unnamed Campaign'}</h1>
+                <p className="text-center sm:text-left">Goal: {formatCurrency(campaign.goal)} USD$</p>
                 <div className="font-semibold grid grid-cols-2 gap-2 mt-2">
                   <h1 className="mt-2">Start Time</h1>
                   <h1 className="mt-2">End Time</h1>
-                  <p className="mt-2">{new Date(Number(campaign.startTime) * 1000).toLocaleDateString()}</p>
-                  <p className="mt-2">{new Date(Number(campaign.endTime) * 1000).toLocaleDateString()}</p>
+                  <p className="mt-2">{formatDate(campaign.startTime)}</p>
+                  <p className="mt-2">{formatDate(campaign.endTime)}</p>
                 </div>
                 <p
                   className={`mt-2 p-2 ${campaign.isOpen ? 'bg-green-100 border-2 border-green-500' : 'bg-red-100 border-2 border-red-500'

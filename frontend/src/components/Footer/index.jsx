@@ -50,8 +50,9 @@ const Footer = () => {
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
-                    <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://flowbite.com/" className="hover:underline">Sturan Network™</a>. All Rights Reserved.
-                    </span>
+                    <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <Link target="_blank" href="https://sturanet.xyz/" className="hover:underline">Sturan Network™</Link>. All Rights Reserved</span>
+                    <br></br>
+                    <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">Donation: 0x0caDDE63e1A3F92d6E754eFb74288810DABFC150</span>
                     <div className="flex mt-4 sm:justify-center sm:mt-0">
                         <Link href="https://x.com/sturanet" target="blank" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
                             <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 17">

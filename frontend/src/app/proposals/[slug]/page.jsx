@@ -6,47 +6,42 @@ import Link from "next/link";
 import SideBarReward from "../../../components/SideBarReward";
 import { Checks } from "@phosphor-icons/react";
 import { SocialIcon } from "react-social-icons";
-import { useFetchCampaigns } from "../../utils/contract";
+import { useFetchCampaignById } from "../../utils/contract";
 
 const CampaignDetail = ({ params }) => {
   const [campaign, setCampaign] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const { slug } = params;
 
+  const { campaignDetails, isLoading } = useFetchCampaignById(Number(slug));
+
   useEffect(() => {
-    const fetchCampaignDetails = async () => {
-      try {
-        const campaignDetails = await useFetchCampaigns(Number(slug));
-        setCampaign(campaignDetails);
-      } catch (error) {
-        console.error("Error fetching campaign details", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (slug) {
-      fetchCampaignDetails();
-    }
-  }, [slug]);
-
-  const handleShareClick = (platform) => {
-    const campaignLink = window.location.href;
-    if (platform === "x") {
-      window.open(`https://twitter.com/intent/tweet?text=Check%20out%20this%20campaign!&url=${campaignLink}`, '_blank');
-    } else if (platform === "copy") {
-      navigator.clipboard.writeText(campaignLink).then(() => {
-        setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000);
-      }).catch((error) => {
-        console.error("Error copying link to clipboard", error);
+    if (!isLoading && campaignDetails) {
+      setCampaign({
+        name: campaignDetails[0],
+        goal: campaignDetails[1],
+        raised: campaignDetails[2],
+        maxContributor: campaignDetails[3],
+        maxContribution: campaignDetails[4],
+        contributorCount: campaignDetails[5],
+        startTime: campaignDetails[6],
+        endTime: campaignDetails[7],
+        isOpen: campaignDetails[8],
+        description: campaignDetails[9] || "No description available."
       });
+    }
+  }, [isLoading, campaignDetails]);
+
+  const handleShareClick = (type) => {
+    if (type === "copy") {
+      navigator.clipboard.writeText(window.location.href);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
@@ -75,13 +70,13 @@ const CampaignDetail = ({ params }) => {
                       className="p-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleShareClick("x")}
                     >
-                      <SocialIcon target="_blank" style={{ height:25, width: 25 }} url="https://x.com"/>
+                      <SocialIcon target="_blank" style={{ height: 25, width: 25 }} url="https://x.com" />
                     </li>
                     <li
                       className="p-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleShareClick("copy")}
                     >
-                      {copySuccess ? <Checks size={32} />: 'Copy'}
+                      {copySuccess ? <Checks size={32} /> : "Copy"}
                     </li>
                   </ul>
                 </div>
@@ -104,7 +99,7 @@ const CampaignDetail = ({ params }) => {
           </div>
           <div className="mt-6 lg:mt-12">
             <h1 className="font-semibold text-2xl lg:text-3xl">Article</h1>
-            <p className="mt-2 lg:mt-4">{campaign.description || "No description available."}</p>
+            <p className="mt-2 lg:mt-4">{campaign.description}</p>
             <div className="flex justify-center items-center mt-4">
               <Image src="/assets/dummy-foto.png" height="400" width="400" alt="Campaign image" className="w-full h-auto" />
             </div>

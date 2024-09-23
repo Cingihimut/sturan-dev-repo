@@ -10,7 +10,7 @@ import { headers } from "next/headers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Sturan | Equity CrowdFunding",
+  title: "Sturan | Safety CrowdFunding",
   description: "We help everyone to own a global company in the world",
 };
 

@@ -49,8 +49,29 @@ export const useFetchCampaigns = () => {
     abi: Crowdfunding.abi as Abi,
     address: CROWDFUNDING_CONTRACT_ADDRESS,
     functionName: 'getCampaignDetails',
-    args: [0], // This will be updated in the component
+    args: [0],
   });
 
   return { campaignCount, isCountLoading, campaignDetails, isDetailsLoading };
 };
+
+export const useFetchCampaignById = (campaignId: number) => {
+  const { data: campaignDetails, isLoading } = useReadContract({
+    abi: Crowdfunding.abi as Abi,
+    address: CROWDFUNDING_CONTRACT_ADDRESS,
+    functionName: 'getCampaignDetails',
+    args: [BigInt(campaignId)],
+  });
+
+  return { campaignDetails, isLoading };
+};
+
+export const useFetchContributors = (campaignId: number) => {
+  const { data: contributors, isLoading } = useReadContract({
+    abi: Crowdfunding.abi as Abi,
+    address: CROWDFUNDING_CONTRACT_ADDRESS,
+    functionName: "getContributorStatus",
+    args: [BigInt(campaignId)]
+  })
+  return { contributors, isLoading }
+}
