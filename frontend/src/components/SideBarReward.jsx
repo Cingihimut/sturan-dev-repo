@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import React, { useState, useCallback, useEffect } from "react";
 import Image from "next/image";
-import { useFetchCampaignById, useFetchCampaigns, useFetchContributors } from "../app/utils/contract";
+import { useFetchContributors } from "../app/utils/contract";
 import CardSubmit from "./CardSubmit";
 import Crowdfunding from "../contracts/Crowdfunding.json";
 import { useReadContract, useAccount } from "wagmi";
@@ -45,12 +45,12 @@ const SideBarReward = ({ campaignId }) => {
 
   const handleTakePartClick = () => {
     if (!hasContributed()) {
-      setShowCardSubmit(true);
+      setShowCardSubmit(true); // Tampilkan CardSubmit
     }
   };
 
   const handleCloseCardSubmit = () => {
-    setShowCardSubmit(false);
+    setShowCardSubmit(false); // Sembunyikan CardSubmit
   };
 
   if (isDetailsLoading || isContributorsLoading) {
@@ -97,6 +97,7 @@ const SideBarReward = ({ campaignId }) => {
           <p>No contributors yet.</p>
         )}
       </div>
+      {/* Tampilkan CardSubmit ketika showCardSubmit true */}
       {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />}
     </div>
   );
