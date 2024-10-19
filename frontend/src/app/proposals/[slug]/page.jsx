@@ -82,9 +82,6 @@ const CampaignDetail = ({ params }) => {
                 </div>
               )}
             </div>
-            <Link target="_blank" className="py-2 px-4 lg:px-6 border-[2px] border-color-neutral rounded-full" href="https://testnets.opensea.io/collection/palestine-need-you-campaign/overview">
-              Store
-            </Link>
           </div>
           <div className="mt-6">
             <h1 className="text-2xl lg:text-3xl font-bold">{campaign.name}</h1>

@@ -1,7 +1,9 @@
-import { useAccount, usePrepareTransactionRequest, useReadContract, useWriteContract } from 'wagmi';
-import { Abi, parseUnits } from 'viem';
+import { useAccount, useBalance, useReadContract, useSimulateContract, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { Abi, parseEther, parseUnits } from 'viem';
 import Crowdfunding from "../../contracts/Crowdfunding.json";
 import Usdcs from "../../contracts/Usdcs.json";
+import { config } from '../../../config';
+import { useEffect } from 'react';
 
 const CROWDFUNDING_CONTRACT_ADDRESS = "0xF6D8Dfb75f0aeB4fdd9FeE729EC9D88F095C1D9F";
 const USDCS_CONTRACT_ADDRESS = "0x57c58d1869e9c354683C2477759402ba7Cb99043";
@@ -77,28 +79,6 @@ export const useFetchContributors = (campaignId: number) => {
   return { contributors, isLoading }
 }
 
-export const useApproveToken = (spender: string, amount: string) => {
-  const { config, error } = usePrepareTransactionRequest({
-    address: USDCS_CONTRACT_ADDRESS,
-    abi: Usdcs.abi,
-    functionName: "approve",
-    args: [spender, parseUnits(amount || '0', 18)],
-  });
+export const useApproveAndTransferToken = (spenderAddress: string, amount: string) => {
 
-  const { write: approve, isLoading: isApproving, isSuccess: isApproveSuccess, error: writeError } = useWriteContract(config);
-
-  return { approve, isApproving, isApproveSuccess, error: error || writeError };
-};
-
-export const useTransferToken = (to: string, amount: string) => {
-  const { config, error } = usePrepareTransactionRequest({
-    address: USDCS_CONTRACT_ADDRESS,
-    abi: Usdcs.abi,
-    functionName: "transfer",
-    args: [to, parseUnits(amount || '0', 18)],
-  });
-
-  const { write: transfer, isLoading: isTransferring, isSuccess: isTransferSuccess, error: writeError } = useWriteContract(config);
-
-  return { transfer, isTransferring, isTransferSuccess, error: error || writeError };
 };

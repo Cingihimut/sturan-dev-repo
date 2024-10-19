@@ -13,7 +13,7 @@ const SideBarReward = ({ campaignId }) => {
   const [campaign, setCampaign] = useState(null);
   const [showCardSubmit, setShowCardSubmit] = useState(false);
   const { address } = useAccount();
-  
+
   const { data: contributors, isLoading: isContributorsLoading } = useFetchContributors(campaignId);
 
   const { data: campaignDetails, isLoading: isDetailsLoading } = useReadContract({
@@ -45,12 +45,12 @@ const SideBarReward = ({ campaignId }) => {
 
   const handleTakePartClick = () => {
     if (!hasContributed()) {
-      setShowCardSubmit(true); // Tampilkan CardSubmit
+      setShowCardSubmit(true); // Show CardSubmit
     }
   };
 
   const handleCloseCardSubmit = () => {
-    setShowCardSubmit(false); // Sembunyikan CardSubmit
+    setShowCardSubmit(false); // Hide CardSubmit
   };
 
   if (isDetailsLoading || isContributorsLoading) {
@@ -75,9 +75,9 @@ const SideBarReward = ({ campaignId }) => {
               <p>Max Contribution: {campaign.maxContribution} USDCS</p>
               <p>Goals: {campaign.goal} USDCS</p>
             </div>
-            <button 
-              onClick={handleTakePartClick} 
-              className={`w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30 ${hasContributed() ? 'cursor-not-allowed opacity-50' : ''}`} 
+            <button
+              onClick={handleTakePartClick}
+              className={`w-full py-2 border-[2px] border-color-primary rounded-xl bg-color-primary bg-opacity-30 ${hasContributed() ? 'cursor-not-allowed opacity-50' : ''}`}
               disabled={hasContributed()}
             >
               {hasContributed() ? "THX For Your Contribution" : "Get Contribute 🔥"}
@@ -97,8 +97,10 @@ const SideBarReward = ({ campaignId }) => {
           <p>No contributors yet.</p>
         )}
       </div>
-      {/* Tampilkan CardSubmit ketika showCardSubmit true */}
-      {showCardSubmit && <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />}
+      {/* Show CardSubmit only if showCardSubmit is true */}
+      {showCardSubmit && (
+        <CardSubmit onClose={handleCloseCardSubmit} campaignId={campaignId} />
+      )}
     </div>
   );
 };

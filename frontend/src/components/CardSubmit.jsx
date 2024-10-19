@@ -1,23 +1,31 @@
-"use client";
+"use client"
 import { X } from "@phosphor-icons/react";
 import { useState, useEffect } from "react";
-import { useAccount, useContractRead } from "wagmi";
-import { useApproveToken, useTransferToken } from '../app/utils/contract';
+import { useConnect, useAccount, useReadContract, useWriteContract, useBalance } from "wagmi";
+import { injected } from "@wagmi/core";
+import { baseSepolia } from "viem/chains";
 import UsdcsAbi from "../contracts/Usdcs.json";
+import CrwdfundingAbi from "../contracts/Crowdfunding.json"
 import DontHaveBalance from "./alert/DontHaveBalance";
+import { parseUnits } from "viem";
 
-const UsdcsAddress = "0xbC65E83Fa8D5A482B637f80cc4edc294ad8B5c75";
+const UsdcsAddress = "0x57c58d1869e9c354683C2477759402ba7Cb99043";
 const CrowdfundingAddress = "0xF6D8Dfb75f0aeB4fdd9FeE729EC9D88F095C1D9F";
 
 const CardSubmit = ({ onClose }) => {
+  const { connectAsync } = useConnect();
   const { address } = useAccount();
   const [UsdcsBalance, setUsdcsBalance] = useState(0);
+  const { writeContractAsync } = useWriteContract();
+  const [started, setStarted] = useState(false);
+  const [campaignId, setCampaignId] = useState("");  // State untuk campaignId
+  const [errors, setErrors] = useState();
+  const [completed, setCompleted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [showCardSubmit, setShowCardSubmit] = useState(true);
   const [showDontHaveBalancePopup, setShowDontHaveBalancePopup] = useState(false);
-  const [error, setError] = useState(null);
 
-  const { data: balanceData } = useContractRead({
+  const { data: balanceData } = useReadContract({
     address: UsdcsAddress,
     abi: UsdcsAbi.abi,
     functionName: "balanceOf",
@@ -30,50 +38,55 @@ const CardSubmit = ({ onClose }) => {
     }
   }, [balanceData]);
 
-  const { approve, isApproving, isApproveSuccess, error: approveError } = useApproveToken(CrowdfundingAddress, inputValue);
-  const { transfer, isTransferring, isTransferSuccess, error: transferError } = useTransferToken(CrowdfundingAddress, inputValue);
-
   const handleChange = (e) => {
     setInputValue(e.target.value);
-    setError(null);
+    setErrors(null);
   };
+
+
+  const handleCampaignIdChange = (e) => {
+    setCampaignId(e.target.value);  // Update state saat user mengubah campaignId
+  };
+
 
   const handleSubmit = async () => {
-    if (parseFloat(inputValue) > UsdcsBalance) {
-      setShowDontHaveBalancePopup(true);
-    } else {
-      try {
-        await approve?.();
-      } catch (err) {
-        setError(err.message || "Approval failed");
+    try {
+      setErrors('')
+      setStarted(true)
+      if (!address) {
+        await connectAsync({ chainId: baseSepolia.id, connector: injected() })
       }
-    }
-  };
 
-  useEffect(() => {
-    if (isApproveSuccess) {
-      try {
-        transfer?.();
-      } catch (err) {
-        setError(err.message || "Transfer failed");
-      }
-    }
-  }, [isApproveSuccess, transfer]);
+      const data = await writeContractAsync({
+        chainId: baseSepolia.id,
+        address: UsdcsAddress,
+        functionName: 'approve',
+        abi: UsdcsAbi.abi,
+        args: [
+          CrowdfundingAddress,
+          Math.round(inputValue * 1e18)
+        ]
+      })
 
-  useEffect(() => {
-    if (isTransferSuccess) {
-      onClose();
+      const contributeTx = await writeContractAsync({
+        chainId: baseSepolia.id,
+        address: CrowdfundingAddress,
+        abi: CrwdfundingAbi.abi,
+        functionName: 'contribute',
+        args: [
+          campaignId,
+          Math.round(inputValue * 1e18)
+        ]
+      })
+      console.log(contributeTx);
+      setCompleted(true)
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setStarted(false)
+      setErrors("Payment failed")
     }
-  }, [isTransferSuccess, onClose]);
-
-  useEffect(() => {
-    if (approveError) {
-      setError(approveError.message || "Approval failed");
-    }
-    if (transferError) {
-      setError(transferError.message || "Transfer failed");
-    }
-  }, [approveError, transferError]);
+  }
 
   return (
     <>
@@ -102,7 +115,7 @@ const CardSubmit = ({ onClose }) => {
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-2">Enter your Usdcs Amount</div>
               <p className="text-gray-700 text-base">Usdcs Balance: {UsdcsBalance}</p>
-              {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              {errors && <p className="text-red-500 text-sm mt-2">{errors}</p>}
             </div>
             <div className="px-6 pt-4 pb-2">
               <input
@@ -111,14 +124,12 @@ const CardSubmit = ({ onClose }) => {
                 placeholder="Input Number"
                 value={inputValue}
                 onChange={handleChange}
-                disabled={isApproving || isTransferring}
               />
               <button
                 onClick={handleSubmit}
                 className="ml-3 p-2 bg-color-typography rounded-full font-semibold"
-                disabled={isApproving || isTransferring || !inputValue}
               >
-                {isApproving ? "Approving..." : isTransferring ? "Transferring..." : "Submit"}
+                Send
               </button>
             </div>
           </div>
