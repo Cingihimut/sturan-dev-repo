@@ -3,6 +3,7 @@ import { connectWeb3 } from "./ethers";
 import claimTokenABI from "../../contracts/ClaimToken.json";
 const claimUsdcs = claimTokenABI.abi;
 const claimTokenAddress = "0xede9E03C07BEaEc431f31CD09D473a90701bca08";
+import { ethers } from 'ethers';
 
 export const claimToken = async() => {
     try {
