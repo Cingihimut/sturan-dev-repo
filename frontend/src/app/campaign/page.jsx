@@ -16,7 +16,6 @@ const Campaign = () => {
         address: '',
     });
 
-    // Inisialisasi EmailJS
     useEffect(() => {
         emailjs.init('e3OBOm1y7-NPErMTw'); // Public Key
     }, []);

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useFetchCampaigns } from "../utils/contract";
@@ -13,9 +13,8 @@ const Participate = () => {
   const { campaignCount, isCountLoading } = useFetchCampaigns();
   const [campaigns, setCampaigns] = useState([]);
   const [currentCampaignId, setCurrentCampaignId] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = 5;
-  const [isAnimating, setIsAnimating] = useState(false);
+  const containerRef = useRef(null);
+  const cardWidth = 280; // Fixed card width
 
   const { data: campaignDetails, isLoading: isDetailsLoading } = useReadContract({
     abi: Crowdfunding.abi,
@@ -64,104 +63,95 @@ const Participate = () => {
     });
   };
 
-  const handleNextPage = () => {
-    if ((currentPage + 1) * cardsPerPage < campaigns.length) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentPage((prevPage) => prevPage + 1);
-        setIsAnimating(false);
-      }, 300); // Durasi animasi 300ms
-    }
-  };
+  const scroll = (direction) => {
+    const container = containerRef.current;
+    if (!container) return;
 
-  const handlePreviousPage = () => {
-    if (currentPage > 0) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentPage((prevPage) => prevPage - 1);
-        setIsAnimating(false);
-      }, 300); // Durasi animasi 300ms
-    }
+    const scrollAmount = direction === 'left' ? -cardWidth - 16 : cardWidth + 16; // Adding gap (16px) to scroll amount
+    const newScrollPosition = container.scrollLeft + scrollAmount;
+    
+    container.scrollTo({
+      left: newScrollPosition,
+      behavior: 'smooth'
+    });
   };
-
-  const paginatedCampaigns = campaigns.slice(
-    currentPage * cardsPerPage,
-    currentPage * cardsPerPage + cardsPerPage
-  );
 
   return (
     <div className="p-4 sm:p-6 md:p-8 bg-color-white">
-      <div className="overflow-hidden">
-        <div
-          className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-transform duration-300 ease-in-out ${
-            isAnimating ? "transform translate-x-[-100%]" : "transform translate-x-0"
-          }`}
+      <div className="relative">
+        <button 
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-800/50 text-white p-2 rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {paginatedCampaigns.map((campaign) => (
-            <Link
-              key={campaign.id}
-              href={`/proposals/${campaign.id}`}
-              className="bg-[#303339] rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
-            >
-              <div className="flex flex-col">
-                <div className="w-full h-[160px] relative">
-                  <Image
-                    src="/assets/dummy-member.jpeg"
-                    fill
-                    style={{ objectFit: "cover" }}
-                    alt="Campaign image"
-                  />
-                </div>
-                <div className="p-2">
-                  <div className="flex justify-between items-center mb-1.5">
-                    <h1 className="font-semibold text-white text-sm truncate max-w-[150px]">
-                      {campaign.name || "Unnamed Campaign"}
-                    </h1>
-                    <span className="text-xs text-gray-300">
-                      {formatCurrency(campaign.goal)} USD
-                    </span>
+          ←
+        </button>
+        <button 
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-gray-800/50 text-white p-2 rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          →
+        </button>
+
+        {/* Campaign container with hidden scrollbar */}
+        <div 
+          ref={containerRef}
+          className="overflow-x-hidden"
+          style={{
+            scrollBehavior: 'smooth',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <div className="flex space-x-4 pb-4" style={{ minWidth: 'min-content' }}>
+            {campaigns.map((campaign) => (
+              <Link
+                key={campaign.id}
+                href={`/proposals/${campaign.id}`}
+                className="flex-none w-[280px] bg-[#303339] rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
+              >
+                <div className="flex flex-col">
+                  <div className="w-full h-[160px] relative">
+                    <Image
+                      src="/assets/dummy-member.jpeg"
+                      fill
+                      style={{ objectFit: "cover" }}
+                      alt="Campaign image"
+                    />
                   </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2 text-xs text-gray-400">
-                      <span className="text-white">
-                        {formatDate(campaign.startTime)}
-                      </span>
-                      <span>-</span>
-                      <span className="text-white">
-                        {formatDate(campaign.endTime)}
+                  <div className="p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <h1 className="font-semibold text-white text-sm truncate max-w-[150px]">
+                        {campaign.name || "Unnamed Campaign"}
+                      </h1>
+                      <span className="text-xs text-gray-300">
+                        {formatCurrency(campaign.goal)} USD
                       </span>
                     </div>
-                    <span
-                      className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                        campaign.isOpen
-                          ? "bg-green-900/30 text-green-400 border border-green-400"
-                          : "bg-red-900/30 text-red-400 border border-red-400"
-                      }`}
-                    >
-                      {campaign.isOpen ? "Ongoing" : "Closed"}
-                    </span>
+                    <div className="flex justify-between items-center">
+                      <div className="flex gap-2 text-xs text-gray-400">
+                        <span className="text-white">
+                          {formatDate(campaign.startTime)}
+                        </span>
+                        <span>-</span>
+                        <span className="text-white">
+                          {formatDate(campaign.endTime)}
+                        </span>
+                      </div>
+                      <span
+                        className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                          campaign.isOpen
+                            ? "bg-green-900/30 text-green-400 border border-green-400"
+                            : "bg-red-900/30 text-red-400 border border-red-400"
+                        }`}
+                      >
+                        {campaign.isOpen ? "Ongoing" : "Closed"}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="flex justify-between mt-4">
-        <button
-          onClick={handlePreviousPage}
-          disabled={currentPage === 0}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNextPage}
-          disabled={(currentPage + 1) * cardsPerPage >= campaigns.length}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
       </div>
     </div>
   );
