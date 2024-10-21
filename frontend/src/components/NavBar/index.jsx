@@ -10,7 +10,7 @@ const Navbar = () => {
                         Sturan Network
                     </Link>
                     <div className="space-x-6">
-                        <Link href="#" className="hover:underline decoration-1">Start a campaign</Link>
+                        <Link href="/campaign" className="hover:underline decoration-1">Start a campaign</Link>
                         <Link href="/vote" className="hover:underline decoration-1">Vote</Link>
                     </div>
                     <ConnectButton />

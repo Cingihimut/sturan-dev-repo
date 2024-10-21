@@ -65,7 +65,6 @@ const VotingGuide = () => {
           ))}
         </div>
 
-        {/* Right Content */}
         <div className="space-y-8">
           {menuItems.map((item) => (
             <div
