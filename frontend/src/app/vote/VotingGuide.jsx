@@ -9,13 +9,13 @@ const VotingGuide = () => {
   const menuItems = [
     {
       id: 1,
-      title: "Understand off-chain governance",
-      content: `Off-chain governance refers to processes for making decisions that don't require on-chain voting and gathering feedback prior to on-chain voting. Off-chain governance happens on the Maker Governance Forum, where the community meets to propose and discuss new proposals. Anyone can participate in off-chain governance.`
+      title: "Voting Process",
+      content: `Each user can cast one vote per-proposal, in this process users can use XTR tokens to vote.`
     },
     {
       id: 2,
-      title: "Understand on-chain governance",
-      content: "On-chain governance involves direct interaction with the blockchain through voting mechanisms. This includes voting on proposals, delegating voting power, and executing approved changes on the blockchain."
+      title: " Token Locking at the Time of Proposal Submission",
+      content: "Users who wish to propose must lock up a certain amount of XTR tokens as collateral. These tokens will be locked during the voting period."
     },
     {
       id: 3,

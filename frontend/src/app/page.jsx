@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Participate from "./proposals/page";
 import Ended from "../components/ended/Ended";
-import WillBeOver from "../components/willbeover/WillBeOver";
+import SturanetProduct from "./product/SturanetProduct";
 
 const Page = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [campaigns, setCampaigns] = useState([]); // Tambahkan state untuk campaigns
   const [signClient, setSignClient] = useState(null);
+
 
   useEffect(() => {
     // Contoh data campaign, bisa diubah untuk mengambil dari API atau smart contract
@@ -32,7 +33,9 @@ const Page = () => {
       setCampaigns(fetchedCampaigns); // Update state dengan campaigns yang diambil
     };
 
+
     fetchCampaigns(); // Memanggil fungsi untuk mengambil campaigns
+
 
     const initSignClient = async () => {
       try {
@@ -46,8 +49,10 @@ const Page = () => {
       }
     };
 
+
     initSignClient();
   }, []);
+
 
   const images = [
     "/assets/campaign-palestine.png",
@@ -55,18 +60,21 @@ const Page = () => {
     "/assets/huricane.png",
   ];
 
+
   const handlePrev = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
+
 
   const handleNext = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
+
   return (
     <>
       <div id="controls-carousel" className="relative w-full p-4 md:p-8" data-carousel="static">
-        <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+        <div className="relative h-56 overflow-hidden rounded-lg md:h-96 md:rounded-lg">
           {images.map((src, index) => (
             <div
               key={index}
@@ -124,12 +132,13 @@ const Page = () => {
       </div>
       <h1 className="text-xl sm:text-2xl font-bold text-color-neutral mb-2 mt-3 ml-6">Available Campaigns</h1>
       <Participate />
-      <h1 className="text-xl sm:text-2xl font-bold text-color-neutral mb-2 mt-3 ml-6">Will be over</h1>
-      <WillBeOver />
+      <h1 className="text-xl sm:text-2xl font-bold text-color-neutral mb-2 mt-3 ml-6">Our Product</h1>
+      <SturanetProduct />
       <h1 className="text-xl sm:text-2xl font-bold text-color-neutral mb-2 mt-3 ml-6">Ended</h1>
       <Ended campaigns={campaigns} />
     </>
   );
 };
+
 
 export default Page;

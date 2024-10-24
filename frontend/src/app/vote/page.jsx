@@ -1,6 +1,7 @@
 import Link from "next/link"
 import AllVote from "./AllVote.jsx"
 import VotingGuide from "./VotingGuide.jsx"
+import Delegates from "./Delegates.jsx"
 
 const Vote = () => {
     return (
@@ -39,6 +40,9 @@ const Vote = () => {
             <AllVote />
             <div className="p-6 md:p-16">
                 <VotingGuide />
+            </div>
+            <div className="p-6 md:p-16">
+                <Delegates />
             </div>
         </>
     )
